@@ -17,6 +17,8 @@ https://miro.com/app/board/uXjVOf8j2IY=/?invite_link_id=98643837632
 
 ## How to develop?
 
+Clone the repo and switch to the `dev` branch. You'll be checking out all the branches from the `dev` branch.
+
 Be sure to have Docker, Node.js and yarn installed on your machine (I recommend to install Node using NVM and use the version defined in the .nvmrc file).
 
 Then, just launch the following command in your terminal:
