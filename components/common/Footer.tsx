@@ -15,9 +15,9 @@ export const Footer = () => {
       Copyright &copy; {new Date().getFullYear()}{" "}
       <Link href="https://github.com/tripleadev">TripleA</Link>
       <br />
-      Vercel build SHA: {process.env.VERCEL_GIT_COMMIT_SHA || "development"}
+      Vercel build SHA: {process.env.NEXT_PUBLIC_BUILD_SHA || "development"}
       <br />
-      Vercel environment: {process.env.VERCEL_ENV || "development"}
+      Vercel environment: {process.env.NEXT_PUBLIC_ENV || "development"}
     </Box>
   );
 };
