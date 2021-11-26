@@ -2,7 +2,7 @@
   "name": "amnesty",
   "private": true,
   "scripts": {
-    "dev": "yarn install --frozen-lockfile && concurrently --kill-others-on-fail --names app,_db --prefix-colors blue.inverse,green 'yarn dev:start:app' 'yarn dev:start:db'",
+    "dev": "yarn install --frozen-lockfile && concurrently --kill-others-on-fail --names app,_db --prefix-colors blue.inverse,green 'yarn:dev:start:app' 'yarn:dev:start:db'",
     "dev:start:db": "docker compose up",
     "dev:start:app": "wait-on tcp:5432 --interval 5000 && yarn db:migrate:dev && next dev",
     "dev:start:studio": "prisma studio",
