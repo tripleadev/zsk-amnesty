@@ -21,6 +21,8 @@ Clone the repo and switch to the `dev` branch. You'll be checking out all the br
 
 Be sure to have Docker, Node.js and yarn installed on your machine (I recommend to install Node using NVM and use the version defined in the .nvmrc file).
 
+Copy the contents of `.env.sample` into `.env`
+
 Then, just launch the following command in your terminal:
 
 ```
