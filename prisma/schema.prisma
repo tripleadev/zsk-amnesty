@@ -4,12 +4,33 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Admin {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
-  email String @unique
-  password String
+  email     String   @unique
+  password  String
+}
+
+model Letter {
+  id            Int         @id @default(autoincrement())
+  destination   Destination @relation(fields: [destinationId], references: [id])
+  destinationId Int
+  author        Author      @relation(fields: [authorId], references: [id])
+  authorId      Int
+}
+
+model Author {
+  id             Int      @id @default(autoincrement())
+  classId        Int
+  registerNumber Int
+  letters        Letter[]
+}
+
+model Destination {
+  id      Int      @id @default(autoincrement())
+  name    String
+  letters Letter[]
 }
