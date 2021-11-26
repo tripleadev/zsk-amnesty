@@ -1,34 +1,71 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ZSK Amnesty
 
-## Getting Started
+## What is it?
 
-First, run the development server:
+It's an app made for keeping track of all the letters which are written durimg the Amnesty International marathon at our school.
+The system consists of a public statistics page and a dashboard for the admins to put the data in.
 
-```bash
-npm run dev
-# or
+https://miro.com/app/board/uXjVOf8j2IY=/?invite_link_id=98643837632
+
+## What's it made of?
+
+- Next.js
+- Prisma
+- PostgreSQL
+- Docker
+- Material UI
+
+## How to develop?
+
+Be sure to have Docker, Node.js and yarn installed on your machine (I recommend to install Node using NVM and use the version defined in the .nvmrc file).
+
+Then, just launch the following command in your terminal:
+
+```
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+It will create and launch the development database, do all the required migrations and start the development server.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Modifying the database model
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Modify the prisma schema in the `prisma/schema.prisma` file, and restart the development server.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Looking inside the DB
 
-## Learn More
+Use the PGAdmin launched automatically alongside the database, available at `localhost:5050` with the following credentials:
 
-To learn more about Next.js, take a look at the following resources:
+```
+Emial: admin@admin.com
+Password: admin
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+If the database is not visible inside the PGAdmin, add it manually with the following data:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+host: amnesty_db
+port: 5432
+username: postgres
+password: postgres
+```
 
-## Deploy on Vercel
+Another option is using Prisma Studio, which you can launch via the following command, being sure that the development process (DB and app) is running concurrently:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+yarn dev:start:studio
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Seeding the DB
+
+Be sure to have the development process running concurrently, and launch:
+
+```
+yarn db:seed
+```
+
+### Commiting changes
+
+- Use the [Conventional Commits methodology](https://conventionalcommits.org/)
+- Commit on the branch with the name of your ticket
+- Create pull requests on the `dev` branch
+- Wait for code reviews!
