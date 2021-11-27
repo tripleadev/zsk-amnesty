@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 type HTTPMethods = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS";
 
-export const withMethods =
+export const withApiMethods =
   <R extends NextApiRequest>(
     handlers: Partial<Record<HTTPMethods | "default", (req: R, res: NextApiResponse) => unknown>>,
   ) =>

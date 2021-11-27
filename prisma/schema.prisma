@@ -4,23 +4,24 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Admin {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
-  email String @unique
-  password String
+  email     String   @unique
+  password  String
 
   sessions Session[]
 }
 
 model Session {
-  id String @id
+  id        String   @id
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   expiresAt DateTime
 
-  user Admin @relation(fields: [userId], references: [id])
+  user   Admin  @relation(fields: [userId], references: [id])
   userId String
 }

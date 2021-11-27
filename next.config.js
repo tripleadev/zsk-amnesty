@@ -8,6 +8,11 @@ module.exports = {
         destination: "/admin/login",
         permanent: true,
       },
+      {
+        source: "/admin",
+        destination: "/admin/dashboard",
+        permanent: true,
+      },
     ];
   },
 };

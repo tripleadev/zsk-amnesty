@@ -1,13 +1,20 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { withValidation } from "../../lib/withValidation";
-import { LoginInputSchema } from "../../lib/schemas";
-import { withMethods } from "../../lib/withMethods";
+import { withApiValidation } from "../../lib/withApiValidation";
+import { withApiMethods } from "../../lib/withApiMethods";
 import { prisma } from "../../lib/db";
 import { compare } from "../../lib/utils/bcryptHash";
 import { safeRandomString } from "../../lib/utils/safeRandomString";
+import { getSessionCookie, getSessionExpirationDate } from "../../lib/auth/auth";
+import { Asserts, object, string } from "yup";
 
-export default withMethods({
-  POST: withValidation(LoginInputSchema, async (req, res) => {
+export const loginSchema = object({
+  email: string().required("E-Mail is required").email("E-Mail must be valid"),
+  password: string().required("Password is required"),
+});
+
+export type LoginSchemaType = Asserts<typeof loginSchema>;
+
+export default withApiMethods({
+  POST: withApiValidation(loginSchema, async (req, res) => {
     const { email, password } = req.body;
 
     let user;
@@ -32,7 +39,7 @@ export default withMethods({
     }
 
     try {
-      const sessionExpiry = new Date(Date.now() + 3600 * 1000 * 24);
+      const sessionExpiry = getSessionExpirationDate();
       const session = await prisma.session.create({
         data: {
           userId: user.id,
@@ -41,12 +48,9 @@ export default withMethods({
         },
       });
 
-      res.setHeader(
-        "Set-Cookie",
-        `Session=${session.id}; Expires=${sessionExpiry.toUTCString()}; Secure; HttpOnly`,
-      );
+      res.setHeader("Set-Cookie", getSessionCookie(session.id, sessionExpiry));
 
-      return res.redirect("/admin");
+      return res.json({ message: "Logged in successfully", user });
     } catch {
       return res.status(500).json({ message: "Internal server error" });
     }

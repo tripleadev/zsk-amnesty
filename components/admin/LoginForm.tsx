@@ -1,19 +1,31 @@
 import { Box, Typography, Input, Button, FormHelperText } from "@mui/material";
+import Axios from "axios";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-
-type Inputs = {
-  email: string;
-  password: string;
-};
+import { LoginSchemaType } from "../../pages/api/login";
 
 export const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  } = useForm<LoginSchemaType>();
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
+  const onSubmit: SubmitHandler<LoginSchemaType> = (data) => {
+    Axios.post("/api/login", data)
+      .then((res) => {
+        if (res.data.user) {
+          return router.push("/admin/dashboard");
+        }
+        throw new Error("");
+      })
+      .catch((err) => {
+        setError(err.response?.data?.message || "Something went wrong");
+      });
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -22,13 +34,18 @@ export const LoginForm = () => {
           ZSK Amnesty Admin
         </Typography>
         <Box sx={{ m: 2 }}>
-          <Input placeholder="E-Mail" {...register("email", { required: true })} />
+          <Input placeholder="E-Mail" {...register("email", { required: true })} type="email" />
           {errors.email && <FormHelperText error>This field is required</FormHelperText>}
         </Box>
         <Box sx={{ m: 2 }}>
-          <Input placeholder="Password" {...register("password", { required: true })} />
+          <Input
+            placeholder="Password"
+            {...register("password", { required: true })}
+            type="password"
+          />
           {errors.password && <FormHelperText error>This field is required</FormHelperText>}
         </Box>
+        {error && <FormHelperText error>{error}</FormHelperText>}
 
         <Box sx={{ m: 2 }}>
           <Button variant="contained" type="submit">
