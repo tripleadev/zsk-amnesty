@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { hash } from "../lib/bcryptHash";
+import { hash } from "../lib/utils/bcryptHash";
 const prisma = new PrismaClient();
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@admin.com";

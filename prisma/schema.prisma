@@ -12,6 +12,8 @@ model Admin {
   createdAt DateTime @default(now())
   email     String   @unique
   password  String
+
+  sessions Session[]
 }
 
 model Letter {
@@ -33,4 +35,14 @@ model Destination {
   id      Int      @id @default(autoincrement())
   name    String
   letters Letter[]
+}
+
+model Session {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime
+
+  user   Admin  @relation(fields: [userId], references: [id])
+  userId String
 }
