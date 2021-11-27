@@ -27,7 +27,7 @@ model Letter {
 
 model Author {
   id             String      @id @default(uuid())
-  classId        Int
+  classId        String
   registerNumber Int
   letters        Letter[]
 }
