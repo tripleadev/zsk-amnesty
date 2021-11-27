@@ -47,3 +47,9 @@ model Session {
   user   Admin  @relation(fields: [userId], references: [id])
   userId String
 }
+
+model Stat {
+  id        String @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
