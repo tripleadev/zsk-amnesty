@@ -17,6 +17,27 @@ model Admin {
   sessions Session[]
 }
 
+model Letter {
+  id            String         @id @default(uuid())
+  destination   Destination @relation(fields: [destinationId], references: [id])
+  destinationId String
+  author        Author      @relation(fields: [authorId], references: [id])
+  authorId      String
+}
+
+model Author {
+  id             String      @id @default(uuid())
+  classId        Int
+  registerNumber Int
+  letters        Letter[]
+}
+
+model Destination {
+  id      String      @id @default(uuid())
+  name    String
+  letters Letter[]
+}
+
 model Session {
   id        String   @id
   createdAt DateTime @default(now())
