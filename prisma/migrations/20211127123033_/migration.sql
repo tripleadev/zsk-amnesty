@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Author" ALTER COLUMN "classId" SET DATA TYPE TEXT;
