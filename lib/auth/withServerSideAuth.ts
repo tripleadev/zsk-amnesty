@@ -22,8 +22,6 @@ export const withServerSideAuth =
       const sessionId = req.cookies.authorization;
       const session = await verifySession(sessionId);
 
-      console.log(sessionId);
-
       if (shouldRefreshSession(session.updatedAt)) {
         const sessionExpiry = getSessionExpirationDate();
 
