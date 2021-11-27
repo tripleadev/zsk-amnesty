@@ -18,7 +18,7 @@ model Admin {
 }
 
 model Letter {
-  id            String         @id @default(uuid())
+  id            String      @id @default(uuid())
   destination   Destination @relation(fields: [destinationId], references: [id])
   destinationId String
   author        Author      @relation(fields: [authorId], references: [id])
