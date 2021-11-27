@@ -18,22 +18,22 @@ model Admin {
 }
 
 model Letter {
-  id            Int         @id @default(autoincrement())
+  id            String         @id @default(uuid())
   destination   Destination @relation(fields: [destinationId], references: [id])
-  destinationId Int
+  destinationId String
   author        Author      @relation(fields: [authorId], references: [id])
-  authorId      Int
+  authorId      String
 }
 
 model Author {
-  id             Int      @id @default(autoincrement())
+  id             String      @id @default(uuid())
   classId        Int
   registerNumber Int
   letters        Letter[]
 }
 
 model Destination {
-  id      Int      @id @default(autoincrement())
+  id      String      @id @default(uuid())
   name    String
   letters Letter[]
 }
