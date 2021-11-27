@@ -7,10 +7,12 @@
     "dev:start:app": "wait-on tcp:5432 --interval 5000 && yarn db:migrate:dev && next dev",
     "dev:start:studio": "prisma studio",
     "build": "next build",
+    "vercel-build": "yarn db:generate:prod && yarn db:migrate:prod && next build",
     "start": "next start",
     "lint": "next lint",
-    "db:migrate:dev": "prisma migrate dev && prisma generate",
-    "db:migrate:prod": "prisma migrate deploy",
+    "db:migrate:dev": "prisma generate && prisma migrate dev",
+    "db:generate:prod": "PRISMA_CLIENT_ENGINE_TYPE='dataproxy' prisma generate",
+    "db:migrate:prod": " DATABASE_URL=\"$DIRECT_DATABASE_URL\" ./prod-migrate.sh",
     "db:seed": "prisma db seed"
   },
   "dependencies": {
