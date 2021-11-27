@@ -6,7 +6,7 @@
     "dev:start:db": "docker compose up",
     "dev:start:app": "wait-on tcp:5432 --interval 5000 && yarn db:migrate:dev && next dev",
     "dev:start:studio": "prisma studio",
-    "build": "next build",
+    "build": "yarn db:migrate:prod && next build",
     "start": "next start",
     "lint": "next lint",
     "db:migrate:dev": "prisma migrate dev && prisma generate",
