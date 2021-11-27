@@ -1,51 +1,73 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { PrismaClient } from ".prisma/client";
 import Link from 'next/link';
-import { Box, Button } from "@mui/material";
+import { Alert, Box, Button, FormHelperText, Input, Snackbar } from "@mui/material";
+import Axios from "axios";
+import useSWR from 'swr';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { AdminSchemeType } from '../api/admins';
 
 const columnsObject: GridColDef[] = [
-  { field: 'email', headerName: 'Email Adress', width: 150 },
+  { field: 'email', headerName: 'Email Adress', width: 300 },
 ];
 
-const AdminsManagement = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const fetcher = (url: string) => Axios.get(url).then(res => res.data);
+
+const AdminsManagement = () => {
+  const { data } = useSWR('/api/admins', fetcher);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AdminSchemeType>();
+  const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+
+  const onSubmit: SubmitHandler<AdminSchemeType> = (data) => {
+    Axios.post('/api/admins', data)
+      .then(res => {
+        setMessage(res.data.message);
+      })
+      .catch(err => {
+        setError(err.response?.data?.message || "Something went wrong");
+      });
+  };
+
   return (
     <Box m={5}>
       <Link href="/admin/dashboard">
-        <Button>Dashboard</Button>
+        <Button sx={{ mb: 3 }}>Dashboard</Button>
       </Link>
+      <Box mb={3}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Input sx={{ mr: 3 }} type="email" placeholder="Email" {...register("email", { required: true })} />
+          {errors.email && <FormHelperText error>This field is required</FormHelperText>}
+
+          <Input sx={{ mr: 3 }} type="password" placeholder="Password" {...register("password", { required: true })} />
+          {errors.password && <FormHelperText error>This field is required</FormHelperText>}
+
+          <Button variant="contained" type="submit">
+            Add new admin
+          </Button>
+        </form>
+      </Box>
       <div style={{ height: '50vh', width: '100%' }}>
         <DataGrid
-          rows={data}
+          rows={data?.allAdmins}
           columns={columnsObject}
           autoPageSize
-          checkboxSelection
           disableSelectionOnClick
         />
       </div>
+
+      <Snackbar open={error ? true : false} autoHideDuration={3000}>
+        <Alert severity="error" sx={{ width: '100%' }}>{error}</Alert>
+      </Snackbar>
+      <Snackbar open={message ? true : false} autoHideDuration={3000}>
+        <Alert severity="success" sx={{ width: '100%' }}>{message}</Alert>
+      </Snackbar>
     </Box>
   );
 };
-
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const prisma = new PrismaClient();
-
-  try {
-    const allAdmins = await prisma.admin.findMany();
-
-    return {
-      props: {
-        data: allAdmins
-      },
-    };
-  } catch (err) {
-    alert(err);
-
-    return {
-      props: {},
-    }
-  }
-}
 
 export default AdminsManagement;
