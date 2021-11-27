@@ -10,7 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "db:migrate:dev": "prisma migrate dev && prisma generate",
-    "db:migrate:prod": "prisma migrate deploy",
+    "db:migrate:prod": "PRISMA_CLIENT_ENGINE_TYPE='dataproxy' prisma generate && DATABASE_URL=\"$DIRECT_DATABASE_URL\" prisma migrate deploy",
     "db:seed": "prisma db seed"
   },
   "dependencies": {
