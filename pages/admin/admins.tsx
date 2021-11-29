@@ -40,10 +40,10 @@ const AdminsManagmentPage = ({ user }: InferGetServerSidePropsType<typeof getSer
       <Link href="/admin/dashboard" passHref>
         <Button sx={{ mb: 3 }}>Dashboard</Button>
       </Link>
-      <Box mb={3}>
+      <Box mb={5}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input
-            sx={{ mr: 3 }}
+            sx={{ mr: [0, 3], mb: [2, 0] }}
             type="email"
             placeholder="Email"
             {...register("email", { required: true })}
@@ -51,7 +51,7 @@ const AdminsManagmentPage = ({ user }: InferGetServerSidePropsType<typeof getSer
           {errors.email && <FormHelperText error>This field is required</FormHelperText>}
 
           <Input
-            sx={{ mr: 3 }}
+            sx={{ mr: [0, 3], mb: [2, 0] }}
             type="password"
             placeholder="Password"
             {...register("password", { required: true })}
