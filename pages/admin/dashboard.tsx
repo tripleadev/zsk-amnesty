@@ -7,13 +7,14 @@ const AdminPage = ({ user }: InferGetServerSidePropsType<typeof getServerSidePro
   return (
     <Box m={5} textAlign="center">
       <Typography variant="h4" component="h1">
-        Maraton Pisana Listów<br/>
+        Maraton Pisana Listów
+        <br />
         Admin Panel
       </Typography>
       <Typography my={3} variant="h5" component="h2">
-        Hello { user.email }!
+        Hello {user.email}!
       </Typography>
-      <Link href="/admin/admins">
+      <Link href="/admin/admins" passHref>
         <Button>Lista adminów</Button>
       </Link>
       <Link href="/admin/logout" prefetch={false} passHref>
