@@ -2,10 +2,10 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Link from 'next/link';
 import { Alert, Box, Button, FormHelperText, Input, Snackbar } from "@mui/material";
 import Axios from "axios";
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { AdminSchemeType } from '../api/admins';
+import { AdminSchemaType } from '../api/admins';
 
 const columnsObject: GridColDef[] = [
   { field: 'email', headerName: 'Email Adress', width: 300 },
@@ -13,17 +13,18 @@ const columnsObject: GridColDef[] = [
 
 const fetcher = (url: string) => Axios.get(url).then(res => res.data);
 
-const AdminsManagement = () => {
+const AdminsManagmentPage = () => {
+  const { mutate } = useSWRConfig();
   const { data } = useSWR('/api/admins', fetcher);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AdminSchemeType>();
+  } = useForm<AdminSchemaType>();
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  const onSubmit: SubmitHandler<AdminSchemeType> = (data) => {
+  const onSubmit: SubmitHandler<AdminSchemaType> = (data) => {
     Axios.post('/api/admins', data)
       .then(res => {
         setMessage(res.data.message);
@@ -31,6 +32,8 @@ const AdminsManagement = () => {
       .catch(err => {
         setError(err.response?.data?.message || "Something went wrong");
       });
+
+      mutate("/api/admins");
   };
 
   return (
@@ -70,4 +73,4 @@ const AdminsManagement = () => {
   );
 };
 
-export default AdminsManagement;
+export default AdminsManagmentPage;

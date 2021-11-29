@@ -2,27 +2,25 @@ import { withApiValidation } from "../../lib/withApiValidation";
 import { withApiMethods } from "../../lib/withApiMethods";
 import { prisma } from "../../lib/db";
 import { Asserts, object, string } from "yup";
-import { hashSync } from "bcrypt";
+import { hash } from "../../lib/utils/bcryptHash";
 
-export const adminScheme = object({
+export const adminSchema = object({
   email: string().required("E-Mail is required").email("This is not an email"),
   password: string().required("Password is required"),
 });
 
-export type AdminSchemeType = Asserts<typeof adminScheme>;
+export type AdminSchemaType = Asserts<typeof adminSchema>;
 
 export default withApiMethods({
   GET: async (req, res) => {
     const allAdmins = await prisma.admin.findMany();
     res.json({ allAdmins });
   },
-  POST: withApiValidation(adminScheme, async (req, res) => {
+  POST: withApiValidation(adminSchema, async (req, res) => {
     const { email, password } = req.body;
 
     try {
-      const saltRounds = 10;
-      const passwordHash = hashSync(password, saltRounds);
-      console.log(passwordHash);
+      const passwordHash = hash(password);
 
       const newAdmin = await prisma.admin.create({
         data: {
