@@ -1,17 +1,19 @@
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import Link from "next/link";
-import { Alert, Box, Button, FormHelperText, Input, Snackbar } from "@mui/material";
 import Axios from "axios";
-import useSWR, { useSWRConfig } from "swr";
 import { useState } from "react";
+import useSWR, { useSWRConfig } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { InferGetServerSidePropsType } from "next";
+import { withServerSideAuth } from "../../lib/auth/withServerSideAuth";
 import { AdminSchemaType } from "../api/admins";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { Alert, Box, Button, FormHelperText, Input, Snackbar } from "@mui/material";
+import Link from "next/link";
 
 const columnsObject: GridColDef[] = [{ field: "email", headerName: "Email Adress", width: 300 }];
 
 const fetcher = (url: string) => Axios.get(url).then((res) => res.data);
 
-const AdminsManagmentPage = () => {
+const AdminsManagmentPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { mutate } = useSWRConfig();
   const { data } = useSWR("/api/admins", fetcher);
   const {
@@ -84,5 +86,13 @@ const AdminsManagmentPage = () => {
     </Box>
   );
 };
+
+export const getServerSideProps = withServerSideAuth(async (ctx) => {
+  return {
+    props: {
+      user: ctx.session.user,
+    },
+  };
+});
 
 export default AdminsManagmentPage;

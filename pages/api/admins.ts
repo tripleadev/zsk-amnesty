@@ -20,7 +20,7 @@ export default withApiMethods({
     const { email, password } = req.body;
 
     try {
-      const passwordHash = hash(password);
+      const passwordHash = await hash(password);
 
       const newAdmin = await prisma.admin.create({
         data: {
