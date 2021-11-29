@@ -7,6 +7,9 @@ const AdminPage = ({ user }: InferGetServerSidePropsType<typeof getServerSidePro
   return (
     <div>
       hello, {user.email}
+      <Link href="/admin/destinations" passHref>
+        <Button>Destinations</Button>
+      </Link>
       <Link href="/admin/logout" prefetch={false} passHref>
         <Button>Logout</Button>
       </Link>
