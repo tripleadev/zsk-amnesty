@@ -16,15 +16,18 @@ const AdminPage = ({ user }: InferGetServerSidePropsType<typeof getServerSidePro
       </Typography>
       <Box my={5}>
         <Link href="/admin/admins" passHref>
-          <Button>Lista adminów</Button>
+          <Button>Administratorzy</Button>
         </Link>
         <Link href="/admin/destinations" passHref>
-          <Button>Destinations</Button>
+          <Button>Adresaci</Button>
         </Link>
-        {/*Here we'll be adding link to the other routes*/}
+        <Link href="/admin/letters" passHref>
+          <Button>Listy</Button>
+        </Link>
+        {/* Here we'll be adding links to the other pages */}
       </Box>
       <Link href="/admin/logout" prefetch={false} passHref>
-        <Button variant="contained">Logout</Button>
+        <Button variant="contained">Wyloguj się</Button>
       </Link>
     </Box>
   );

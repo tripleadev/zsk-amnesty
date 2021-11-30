@@ -20,7 +20,7 @@ import { DestinationType } from "../api/destinations";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 
-const Destinations = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const DestinationsManagementPage = () => {
   const { data } = useSWR("/api/destinations");
   const { mutate } = useSWRConfig();
   const {
@@ -43,47 +43,45 @@ const Destinations = ({ user }: InferGetServerSidePropsType<typeof getServerSide
       });
   };
   return (
-    <>
-      <Box m={5}>
-        <Link href="/admin/dashboard" passHref>
-          <Button sx={{ mb: 3 }}>Dashboard</Button>
-        </Link>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {errors.name && <FormHelperText error>This field is required</FormHelperText>}
-          <Input {...register("name", { required: true })} placeholder="destination name" />
-          <Button type="submit" variant="contained" style={{ marginLeft: "10px" }}>
-            Submit
-          </Button>
-        </form>
+    <Box m={5}>
+      <Link href="/admin/dashboard" passHref>
+        <Button sx={{ mb: 3 }}>Dashboard</Button>
+      </Link>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {errors.name && <FormHelperText error>This field is required</FormHelperText>}
+        <Input {...register("name", { required: true })} placeholder="destination name" />
+        <Button type="submit" variant="contained" style={{ marginLeft: "10px" }}>
+          Submit
+        </Button>
+      </form>
 
-        <Box mt={3}>
-          <TableContainer>
-            <Table>
-              <TableBody>
-                {data?.allDestinations?.map(({ name, id }: { name: string; id: string }) => (
-                  <TableRow key={id}>
-                    <TableCell component="th" scope="row">
-                      {name}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-
-        <Snackbar open={error ? true : false} autoHideDuration={3000}>
-          <Alert severity="error" sx={{ width: "100%" }}>
-            {error}
-          </Alert>
-        </Snackbar>
-        <Snackbar open={message ? true : false} autoHideDuration={3000}>
-          <Alert severity="success" sx={{ width: "100%" }}>
-            {message}
-          </Alert>
-        </Snackbar>
+      <Box mt={3}>
+        <TableContainer>
+          <Table>
+            <TableBody>
+              {data?.allDestinations?.map(({ name, id }: { name: string; id: string }) => (
+                <TableRow key={id}>
+                  <TableCell component="th" scope="row">
+                    {name}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
-    </>
+
+      <Snackbar open={error ? true : false} autoHideDuration={3000}>
+        <Alert severity="error" sx={{ width: "100%" }}>
+          {error}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={message ? true : false} autoHideDuration={3000}>
+        <Alert severity="success" sx={{ width: "100%" }}>
+          {message}
+        </Alert>
+      </Snackbar>
+    </Box>
   );
 };
 
@@ -95,4 +93,4 @@ export const getServerSideProps = withServerSideAuth(async (ctx) => {
   };
 });
 
-export default Destinations;
+export default DestinationsManagementPage;

@@ -12,11 +12,12 @@ export type DestinationType = Asserts<typeof destinationSchema>;
 
 export default withApiAuth(
   withApiMethods({
-    GET: async (req, res) => {
+    GET: async (_req, res) => {
       const allDestinations = await prisma.destination.findMany();
+
       res.json({ allDestinations });
     },
-    POST: withApiValidation(destinationSchema, async (req, res) => {
+    POST: withApiValidation({ body: destinationSchema }, async (req, res) => {
       const { name } = req.body;
 
       try {
