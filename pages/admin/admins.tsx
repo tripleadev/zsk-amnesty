@@ -1,7 +1,6 @@
 import Axios from "axios";
 import { useState } from "react";
-import useFetch from "../../lib/utils/useFetch";
-import { useSWRConfig } from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { InferGetServerSidePropsType } from "next";
 import { withServerSideAuth } from "../../lib/auth/withServerSideAuth";
@@ -14,7 +13,7 @@ const columnsObject: GridColDef[] = [{ field: "email", headerName: "Email Adress
 
 const AdminsManagmentPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { mutate } = useSWRConfig();
-  const { data } = useFetch("/api/admins");
+  const { data } = useSWR("/api/admins");
   const {
     register,
     handleSubmit,
