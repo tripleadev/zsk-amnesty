@@ -2,6 +2,7 @@ import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 import Link from "next/link";
 import { LettersForm } from "../../components/letters/LettersForm";
+import { LettersTable } from "../../components/letters/LettersTable";
 import { withServerSideAuth } from "../../lib/auth/withServerSideAuth";
 
 const DestinationsManagementPage = () => {
@@ -11,6 +12,7 @@ const DestinationsManagementPage = () => {
         <Button sx={{ mb: 3 }}>Dashboard</Button>
       </Link>
       <LettersForm />
+      <LettersTable />
     </Box>
   );
 };

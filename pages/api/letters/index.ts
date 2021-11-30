@@ -3,6 +3,7 @@ import { withApiAuth } from "../../../lib/auth/withApiAuth";
 import { withApiMethods } from "../../../lib/withApiMethods";
 import { withApiValidation } from "../../../lib/withApiValidation";
 import { prisma } from "../../../lib/db";
+import { DEFAULT_LETTERS_TAKE } from "../../../components/letters/LettersTable";
 
 export default withApiAuth(
   withApiMethods({
@@ -10,7 +11,7 @@ export default withApiAuth(
       {
         query: object({
           skip: number().default(0),
-          take: number().default(20),
+          take: number().default(DEFAULT_LETTERS_TAKE),
         }).required(),
       },
       async (req, res) => {
@@ -27,7 +28,14 @@ export default withApiAuth(
           },
         });
 
-        return res.json({ letters });
+        const allLettersCount = await prisma.letter.count();
+
+        return res.json({
+          letters,
+          pagination: {
+            allLettersCount,
+          },
+        });
       },
     ),
     POST: withApiValidation(
