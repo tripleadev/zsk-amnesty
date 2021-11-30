@@ -1,4 +1,5 @@
-import { Box, Typography, Input, Button, FormHelperText } from "@mui/material";
+import { Box, Typography, Input, FormHelperText } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import Axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -12,9 +13,11 @@ export const LoginForm = () => {
     formState: { errors },
   } = useForm<LoginSchemaType>();
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const onSubmit: SubmitHandler<LoginSchemaType> = (data) => {
+    setLoading(true);
     Axios.post("/api/login", data)
       .then((res) => {
         if (res.data.user) {
@@ -23,6 +26,7 @@ export const LoginForm = () => {
         throw new Error("");
       })
       .catch((err) => {
+        setLoading(false);
         setError(err.response?.data?.message || "Something went wrong");
       });
   };
@@ -48,9 +52,9 @@ export const LoginForm = () => {
         {error && <FormHelperText error>{error}</FormHelperText>}
 
         <Box sx={{ m: 2 }}>
-          <Button variant="contained" type="submit">
-            Log In
-          </Button>
+          <LoadingButton loading={loading} variant="contained" type="submit">
+            Login
+          </LoadingButton>
         </Box>
       </Box>
     </form>
