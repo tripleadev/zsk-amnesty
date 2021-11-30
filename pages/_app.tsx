@@ -4,7 +4,7 @@ import { CssBaseline } from "@mui/material";
 import { Footer } from "../components/common/Footer";
 import { Box } from "@mui/system";
 import { SWRConfig } from "swr";
-import Axios from 'axios';
+import Axios from "axios";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
