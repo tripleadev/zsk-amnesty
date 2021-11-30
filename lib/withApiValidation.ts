@@ -29,6 +29,8 @@ export const withApiValidation =
       // @ts-expect-error
       return await handler(req, res);
     } catch (error) {
-      return res.status(400).json(error);
+      return res
+        .status(400)
+        .json({ message: "Bad request parameters", ...(typeof error === "object" ? error : {}) });
     }
   };

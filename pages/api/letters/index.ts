@@ -1,8 +1,8 @@
 import { object, string, number } from "yup";
-import { withApiAuth } from "../../lib/auth/withApiAuth";
-import { withApiMethods } from "../../lib/withApiMethods";
-import { withApiValidation } from "../../lib/withApiValidation";
-import { prisma } from "../../lib/db";
+import { withApiAuth } from "../../../lib/auth/withApiAuth";
+import { withApiMethods } from "../../../lib/withApiMethods";
+import { withApiValidation } from "../../../lib/withApiValidation";
+import { prisma } from "../../../lib/db";
 
 export default withApiAuth(
   withApiMethods({
@@ -21,6 +21,9 @@ export default withApiAuth(
           include: {
             destination: true,
             author: true,
+          },
+          orderBy: {
+            createdAt: "desc",
           },
         });
 
@@ -45,7 +48,6 @@ export default withApiAuth(
               registerNumber,
             },
           });
-
           if (!author) {
             author = await prisma.author.create({
               data: {
@@ -54,7 +56,31 @@ export default withApiAuth(
               },
             });
           }
-        } catch {}
+
+          const destination = await prisma.destination.findUnique({
+            where: {
+              id: destinationId,
+            },
+          });
+          if (!destination) {
+            return res.status(400).json({ message: "Destination not found" });
+          }
+
+          const letter = await prisma.letter.create({
+            data: {
+              authorId: author.id,
+              destinationId: destination.id,
+            },
+            include: {
+              author: true,
+              destination: true,
+            },
+          });
+
+          return res.json({ message: "Letter has been added successfully", letter });
+        } catch {
+          return res.status(500).json({ message: "Internal server error" });
+        }
       },
     ),
   }),
