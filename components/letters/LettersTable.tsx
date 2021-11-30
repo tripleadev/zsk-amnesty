@@ -9,11 +9,17 @@ export const DEFAULT_LETTERS_TAKE = 20;
 type Letters = (Letter & { author: Author; destination: Destination })[];
 
 const cols: GridColDef[] = [
-  { field: "destinationName", headerName: "Adresat", flex: 2, sortable: false, filterable: false },
-  { field: "classId", headerName: "Klasa", flex: 1, sortable: false, filterable: false },
+  {
+    field: "destinationName",
+    headerName: "Destination",
+    flex: 2,
+    sortable: false,
+    filterable: false,
+  },
+  { field: "classId", headerName: "Class", flex: 1, sortable: false, filterable: false },
   {
     field: "registerNumber",
-    headerName: "Numer w dzienniku",
+    headerName: "Register number",
     flex: 1,
     sortable: false,
     filterable: false,

@@ -1,9 +1,15 @@
-import { object, string, number } from "yup";
+import { object, string, number, Asserts } from "yup";
 import { withApiAuth } from "../../../lib/auth/withApiAuth";
 import { withApiMethods } from "../../../lib/withApiMethods";
 import { withApiValidation } from "../../../lib/withApiValidation";
 import { prisma } from "../../../lib/db";
 import { DEFAULT_LETTERS_TAKE } from "../../../components/letters/LettersTable";
+
+const createLetterSchema = object({
+  classId: string().required("Class ID is required"),
+  registerNumber: number().default(undefined),
+  destinationId: string().required("Destination ID is required"),
+});
 
 export default withApiAuth(
   withApiMethods({
@@ -40,11 +46,7 @@ export default withApiAuth(
     ),
     POST: withApiValidation(
       {
-        body: object({
-          classId: string().required("Class ID is required"),
-          registerNumber: number().default(undefined),
-          destinationId: string().required("Destination ID is required"),
-        }),
+        body: createLetterSchema,
       },
       async (req, res) => {
         const { classId, registerNumber, destinationId } = req.body;
