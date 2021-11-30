@@ -1,16 +1,29 @@
 import { InferGetServerSidePropsType } from "next";
 import { withServerSideAuth } from "../../lib/auth/withServerSideAuth";
 import Link from "next/link";
-import { Button } from "@mui/material";
+import { Button, Box, Typography } from "@mui/material";
 
 const AdminPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
-    <div>
-      hello, {user.email}
+    <Box m={5} textAlign="center">
+      <Typography variant="h4" component="h1">
+        Maraton Pisana Listów
+        <br />
+        Admin Panel
+      </Typography>
+      <Typography my={3} variant="h5" component="h2">
+        Hello {user.email}!
+      </Typography>
+      <Box my={5}>
+        <Link href="/admin/admins" passHref>
+          <Button>Lista adminów</Button>
+        </Link>
+        {/*Here we'll be adding link to the other routes*/}
+      </Box>
       <Link href="/admin/logout" prefetch={false} passHref>
-        <Button>Logout</Button>
+        <Button variant="contained">Logout</Button>
       </Link>
-    </div>
+    </Box>
   );
 };
 
