@@ -1,27 +1,25 @@
-# ZSK Amnesty
-
-## What is it?
+<p align="center">
+  <img src="./amnesty-logo.png" width="200" />
+</p>
+<h1 align="center">ZSK Amnesty</h1>
 
 It's an app made for keeping track of all the letters which are written durimg the Amnesty International marathon at our school.
 The system consists of a public statistics page and a dashboard for the admins to put the data in.
 
-https://miro.com/app/board/uXjVOf8j2IY=/?invite_link_id=98643837632
+The main concepts and features of the app were put toghether on this board: https://miro.com/app/board/uXjVOf8j2IY=/?invite_link_id=98643837632
 
-## Table of Contents
+### Table of Contents
 
-- [ZSK Amnesty](#zsk-amnesty)
-  - [What is it?](#what-is-it)
-  - [Table of Contents](#table-of-contents)
-  - [What's it made of?](#whats-it-made-of)
-  - [How to develop?](#how-to-develop)
-    - [Modifying the database model](#modifying-the-database-model)
-    - [Looking inside the DB](#looking-inside-the-db)
-    - [Seeding the DB](#seeding-the-db)
-    - [Summary](#summary)
-  - [Deployment](#deployment)
-    - [Environments](#environments)
-    - [Summary](#summary-1)
-  - [How do I deploy the app on my own?](#how-do-i-deploy-the-app-on-my-own)
+- [What's it made of?](#whats-it-made-of)
+- [How to develop?](#how-to-develop)
+  - [Modifying the database model](#modifying-the-database-model)
+  - [Looking inside the DB](#looking-inside-the-db)
+  - [Seeding the DB](#seeding-the-db)
+  - [Summary](#summary)
+- [Deployment](#deployment)
+  - [Environments](#environments)
+  - [Summary](#summary-1)
+- [How do I deploy the app on my own?](#how-do-i-deploy-the-app-on-my-own)
 
 ## What's it made of?
 
@@ -128,3 +126,5 @@ If you want to deploy this app on your own (we are not planning on transfering o
 1. Fork or clone this repo
 2. Set up a a deployment of your own choice - all you need to provide is a hosting for the Next.js app, and the following environment variables:
    - DATABSE_URL: the connection string/url of the PostgreSQL database. You can also use the [Prisma Cloud Data Proxy](https://www.prisma.io/docs/concepts/components/prisma-data-platform). You can always inspire from the way [how we deployed the app](#deployment) 😄
+
+Our suggestion for the simpliest and fastest deployment setup is just using Heroku for both deploying the App and Database, without having to worry about Prisma Cloud. But the limitation is a harder setup of multiple environments.
