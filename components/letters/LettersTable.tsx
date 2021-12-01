@@ -1,6 +1,6 @@
 import { Letter, Author, Destination } from "@prisma/client";
 import { Box } from "@mui/system";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import { useState } from "react";
 
@@ -29,6 +29,9 @@ const cols: GridColDef[] = [
 export const LettersTable = () => {
   const [pageSize, setPageSize] = useState(DEFAULT_LETTERS_TAKE);
   const [page, setPage] = useState(0);
+  const { mutate, fetcher } = useSWRConfig();
+
+  console.log({ page, pageSize });
 
   const { data, error } = useSWR<{ letters: Letters; pagination: { allLettersCount: number } }>(
     `/api/letters?take=${pageSize}&skip=${page * pageSize}`,
@@ -53,10 +56,16 @@ export const LettersTable = () => {
         filterMode="server"
         pagination
         pageSize={pageSize}
-        onPageSizeChange={(pageSize) => setPageSize(pageSize)}
+        onPageSizeChange={(pageSize) => {
+          setPageSize(pageSize);
+          mutate("/api/letters");
+        }}
         rowsPerPageOptions={[DEFAULT_LETTERS_TAKE, 50, 100]}
         rowCount={data?.pagination?.allLettersCount || 0}
-        onPageChange={(page) => setPage(page)}
+        onPageChange={(page) => {
+          setPage(page);
+          mutate("/api/letters");
+        }}
         page={page}
         loading={!error && !data}
         error={error}
