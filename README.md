@@ -7,6 +7,22 @@ The system consists of a public statistics page and a dashboard for the admins t
 
 https://miro.com/app/board/uXjVOf8j2IY=/?invite_link_id=98643837632
 
+## Table of Contents
+
+- [ZSK Amnesty](#zsk-amnesty)
+  - [What is it?](#what-is-it)
+  - [Table of Contents](#table-of-contents)
+  - [What's it made of?](#whats-it-made-of)
+  - [How to develop?](#how-to-develop)
+    - [Modifying the database model](#modifying-the-database-model)
+    - [Looking inside the DB](#looking-inside-the-db)
+    - [Seeding the DB](#seeding-the-db)
+    - [Summary](#summary)
+  - [Deployment](#deployment)
+    - [Environments](#environments)
+    - [Summary](#summary-1)
+  - [How do I deploy the app on my own?](#how-do-i-deploy-the-app-on-my-own)
+
 ## What's it made of?
 
 - Next.js
@@ -18,6 +34,8 @@ https://miro.com/app/board/uXjVOf8j2IY=/?invite_link_id=98643837632
 - react-hook-form
 
 ## How to develop?
+
+The development process is designed to be as simple to start as possible. The database is automatically created and maintained using Docker Compose, so you don't have to care about it while developing!
 
 Clone the repo and switch to the `dev` branch. You'll be checking out all the branches from the `dev` branch.
 
@@ -69,6 +87,10 @@ Be sure to have the development process running concurrently, and launch:
 yarn db:seed
 ```
 
+### Summary
+
+For any more database operations, check out the [Prisma Migrate](https://www.prisma.io/docs/concepts/components/prisma-migrate) and [Prisma CLI](https://www.prisma.io/docs/reference/api-reference/command-reference) documentation.
+
 For more context about the development process, check out the [docker-compose.yml](./docker-compose.yml) and [package.json](./package.json) files.
 
 ## Deployment
@@ -94,6 +116,8 @@ The app has two environments set up - Preview and Production. Each of them has i
 Production is deployed automatically from the `main` branch, whereas a new instance of Preview is deployed on every commit to the `dev` branch, and every PR to the `main` or `dev` branch.
 
 Important thing to note are the database migrations. For that, we use the Prisma's built-in `prisma migrate` module. We run the migrations on the databases during the deployment phase on Vercel, if the commit is made on the `main` branch (and then, the migration is run on the production database) or on the `dev` branch (in that case, we run the migration on the staging/preview database). If the deployment is made in any other case (for example, is made from a PR), the migrations won't be run.
+
+### Summary
 
 For more context about the whole CI/CD process, check out the [package.json](./package.json) and [prod-migrate.sh](./prod-migrate.sh) files.
 
