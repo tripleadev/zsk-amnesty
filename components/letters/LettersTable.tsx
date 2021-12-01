@@ -1,8 +1,9 @@
 import { Letter, Author, Destination } from "@prisma/client";
 import { Box } from "@mui/system";
-import useSWR, { useSWRConfig } from "swr";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import { useState } from "react";
+import { useQuery, useQueryClient } from "react-query";
+import { fetcher } from "../../lib/fetcher";
 
 export const DEFAULT_LETTERS_TAKE = 20;
 
@@ -29,12 +30,11 @@ const cols: GridColDef[] = [
 export const LettersTable = () => {
   const [pageSize, setPageSize] = useState(DEFAULT_LETTERS_TAKE);
   const [page, setPage] = useState(0);
-  const { mutate, fetcher } = useSWRConfig();
+  const queryClient = useQueryClient();
 
-  console.log({ page, pageSize });
-
-  const { data, error } = useSWR<{ letters: Letters; pagination: { allLettersCount: number } }>(
-    `/api/letters?take=${pageSize}&skip=${page * pageSize}`,
+  const { data, error } = useQuery<{ letters: Letters; pagination: { allLettersCount: number } }>(
+    [`/api/letters`, { take: pageSize, skip: page * pageSize }],
+    fetcher(`/api/letters?take=${pageSize}&skip=${page * pageSize}`),
   );
 
   const rows: GridRowsProp =
@@ -58,13 +58,13 @@ export const LettersTable = () => {
         pageSize={pageSize}
         onPageSizeChange={(pageSize) => {
           setPageSize(pageSize);
-          mutate("/api/letters");
+          queryClient.invalidateQueries("/api/letters");
         }}
         rowsPerPageOptions={[DEFAULT_LETTERS_TAKE, 50, 100]}
         rowCount={data?.pagination?.allLettersCount || 0}
         onPageChange={(page) => {
           setPage(page);
-          mutate("/api/letters");
+          queryClient.invalidateQueries("/api/letters");
         }}
         page={page}
         loading={!error && !data}

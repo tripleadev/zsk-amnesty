@@ -16,8 +16,9 @@ import { Autocomplete } from "@mui/lab";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
-import useSWR, { useSWRConfig } from "swr";
 import Axios from "axios";
+import { useQuery, useQueryClient } from "react-query";
+import { fetcher } from "../../lib/fetcher";
 
 type FormFields = {
   destinationId: string;
@@ -29,9 +30,15 @@ type FormFields = {
 
 export const LettersForm = () => {
   const theme = useTheme();
-  const { data: destinations } = useSWR<{ allDestinations: Destination[] }>("/api/destinations");
-  const { data: classes } = useSWR<{ classes: string[] }>("/api/classes");
-  const { mutate } = useSWRConfig();
+  const { data: destinations } = useQuery<{ allDestinations: Destination[] }>(
+    "/api/destinations",
+    fetcher("/api/destinations"),
+  );
+  const { data: classes } = useQuery<{ classes: string[] }>(
+    "/api/classes",
+    fetcher("/api/classes"),
+  );
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -58,8 +65,8 @@ export const LettersForm = () => {
     })
       .then((res) => {
         setMessage(res.data.message);
-        mutate("/api/classes");
-        mutate("/api/letters");
+        queryClient.invalidateQueries("/api/classes");
+        queryClient.invalidateQueries("/api/letters");
       })
       .catch((err) => {
         setError(err.response?.data?.message || "Something went wrong");

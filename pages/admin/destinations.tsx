@@ -15,14 +15,15 @@ import {
   Snackbar,
 } from "@mui/material";
 import Link from "next/link";
-import useSWR, { useSWRConfig } from "swr";
-import { DestinationType } from "../api/destinations";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
+import { useQuery, useQueryClient } from "react-query";
+import { fetcher } from "../../lib/fetcher";
+import type { DestinationType } from "../api/destinations";
 
 const DestinationsManagementPage = () => {
-  const { data } = useSWR("/api/destinations");
-  const { mutate } = useSWRConfig();
+  const { data } = useQuery("/api/destinations", fetcher("/api/destinations"));
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -36,12 +37,13 @@ const DestinationsManagementPage = () => {
       .post("/api/destinations", data)
       .then((res) => {
         setMessage(res.data.message);
-        mutate("/api/destinations");
+        queryClient.invalidateQueries("/api/destinations");
       })
       .catch((err) => {
         setError(err.response?.data?.message || "Something went wrong");
       });
   };
+
   return (
     <Box m={5}>
       <Link href="/admin/dashboard" passHref>

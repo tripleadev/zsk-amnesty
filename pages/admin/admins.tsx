@@ -1,19 +1,20 @@
 import Axios from "axios";
 import { useState } from "react";
-import useSWR, { useSWRConfig } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { InferGetServerSidePropsType } from "next";
 import { withServerSideAuth } from "../../lib/auth/withServerSideAuth";
 import { AdminSchemaType } from "../api/admins";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Alert, Box, Button, FormHelperText, Input, Snackbar } from "@mui/material";
 import Link from "next/link";
+import { useQuery, useQueryClient } from "react-query";
+import { fetcher } from "../../lib/fetcher";
 
 const columnsObject: GridColDef[] = [{ field: "email", headerName: "Email Adress", width: 300 }];
 
-const AdminsManagmentPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { mutate } = useSWRConfig();
-  const { data } = useSWR("/api/admins");
+const AdminsManagmentPage = () => {
+  const queryClient = useQueryClient();
+  const { data } = useQuery("/api/admins", fetcher("/api/admins"));
+
   const {
     register,
     handleSubmit,
@@ -26,12 +27,12 @@ const AdminsManagmentPage = ({ user }: InferGetServerSidePropsType<typeof getSer
     Axios.post("/api/admins", data)
       .then((res) => {
         setMessage(res.data.message);
+
+        queryClient.invalidateQueries("/api/admins");
       })
       .catch((err) => {
         setError(err.response?.data?.message || "Something went wrong");
       });
-
-    mutate("/api/admins");
   };
 
   return (
