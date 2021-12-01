@@ -12,8 +12,10 @@ https://miro.com/app/board/uXjVOf8j2IY=/?invite_link_id=98643837632
 - Next.js
 - Prisma
 - PostgreSQL
-- Docker
+- Docker (for development)
 - Material UI
+- React Query
+- react-hook-form
 
 ## How to develop?
 
