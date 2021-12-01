@@ -77,8 +77,6 @@ export const LettersForm = () => {
 
   const isBatchMode = watch("batchMode");
 
-  console.log(errors);
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box sx={{ display: "flex", flexWrap: "wrap", alignItems: "center" }}>
