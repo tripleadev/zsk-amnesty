@@ -11,14 +11,13 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  Alert,
-  Snackbar,
 } from "@mui/material";
 import Link from "next/link";
 import useSWR, { useSWRConfig } from "swr";
 import { DestinationType } from "../api/destinations";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
+import Toast from "../../components/common/Toast";
 
 const Destinations = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { data } = useSWR("/api/destinations");
@@ -72,16 +71,8 @@ const Destinations = ({ user }: InferGetServerSidePropsType<typeof getServerSide
           </TableContainer>
         </Box>
 
-        <Snackbar open={error ? true : false} autoHideDuration={3000}>
-          <Alert severity="error" sx={{ width: "100%" }}>
-            {error}
-          </Alert>
-        </Snackbar>
-        <Snackbar open={message ? true : false} autoHideDuration={3000}>
-          <Alert severity="success" sx={{ width: "100%" }}>
-            {message}
-          </Alert>
-        </Snackbar>
+        <Toast value={error} severity="error" />
+        <Toast value={message} severity="success" />
       </Box>
     </>
   );
