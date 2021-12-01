@@ -3,7 +3,7 @@
 </p>
 <h1 align="center">ZSK Amnesty</h1>
 
-It's an app made for keeping track of all the letters which are written durimg the Amnesty International marathon at our school.
+It's an app made for keeping track of all the letters which are written during the Amnesty International marathon at our school.
 The system consists of a public statistics page and a dashboard for the admins to put the data in.
 
 The main concepts and features of the app were put toghether on this board: https://miro.com/app/board/uXjVOf8j2IY=/?invite_link_id=98643837632
