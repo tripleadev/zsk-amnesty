@@ -14,7 +14,7 @@ export const loginSchema = object({
 export type LoginSchemaType = Asserts<typeof loginSchema>;
 
 export default withApiMethods({
-  POST: withApiValidation(loginSchema, async (req, res) => {
+  POST: withApiValidation({ body: loginSchema }, async (req, res) => {
     const { email, password } = req.body;
 
     let user;

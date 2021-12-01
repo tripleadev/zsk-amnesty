@@ -14,5 +14,5 @@ export const withApiMethods =
       return handler(req, res);
     }
 
-    return res.status(405).json({ error: `Method ${method} not allowed` });
+    return res.status(405).json({ message: `Method ${method} not allowed` });
   };
