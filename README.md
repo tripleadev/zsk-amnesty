@@ -69,9 +69,38 @@ Be sure to have the development process running concurrently, and launch:
 yarn db:seed
 ```
 
-### Commiting changes
+For more context about the development process, check out the [docker-compose.yml](./docker-compose.yml) and [package.json](./package.json) files.
 
-- Use the [Conventional Commits methodology](https://conventionalcommits.org/)
-- Commit on the branch with the name of your ticket
-- Create pull requests on the `dev` branch
-- Wait for code reviews!
+## Deployment
+
+Currently, the app is deployed using:
+
+- [Vercel](https://vercel.com/)
+
+  Vercel is responsible for hosting the Next.js app.
+
+- [Prisma Cloud](https://cloud.prisma.io/)
+
+  Prisma Cloud acts as a database proxy between the app hosted on Vercel, and the PostgreSQL database hosted on Heroku. The data proxy is needed for deployments in serverless environments, in order to have a bigger connection pool for the database, without affecting its reliability and/or performance.
+
+- [Heroku](https://heroku.com/)
+
+  We use Heroku Postgres to keep our data in a safe and reliable place.
+
+### Environments
+
+The app has two environments set up - Preview and Production. Each of them has its own database.
+
+Production is deployed automatically from the `main` branch, whereas a new instance of Preview is deployed on every commit to the `dev` branch, and every PR to the `main` or `dev` branch.
+
+Important thing to note are the database migrations. For that, we use the Prisma's built-in `prisma migrate` module. We run the migrations on the databases during the deployment phase on Vercel, if the commit is made on the `main` branch (and then, the migration is run on the production database) or on the `dev` branch (in that case, we run the migration on the staging/preview database). If the deployment is made in any other case (for example, is made from a PR), the migrations won't be run.
+
+For more context about the whole CI/CD process, check out the [package.json](./package.json) and [prod-migrate.sh](./prod-migrate.sh) files.
+
+## How do I deploy the app on my own?
+
+If you want to deploy this app on your own (we are not planning on transfering ownership of this repo to anyone else), you can use the following steps:
+
+1. Fork or clone this repo
+2. Set up a a deployment of your own choice - all you need to provide is a hosting for the Next.js app, and the following environment variables:
+   - DATABSE_URL: the connection string/url of the PostgreSQL database. You can also use the [Prisma Cloud Data Proxy](https://www.prisma.io/docs/concepts/components/prisma-data-platform). You can always inspire from the way [how we deployed the app](#deployment) 😄
