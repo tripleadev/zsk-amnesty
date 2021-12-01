@@ -3,10 +3,12 @@ import {
   Alert,
   Button,
   FormControl,
+  FormControlLabel,
   InputLabel,
   MenuItem,
   Select,
   Snackbar,
+  Switch,
   TextField,
   useTheme,
 } from "@mui/material";
@@ -21,6 +23,8 @@ type FormFields = {
   destinationId: string;
   classId: string;
   registerNumber?: number;
+  batchMode?: true;
+  amount?: number;
 };
 
 export const LettersForm = () => {
@@ -34,15 +38,23 @@ export const LettersForm = () => {
     handleSubmit,
     control,
     formState: { errors },
+    watch,
   } = useForm<FormFields>();
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  const onSubmit: SubmitHandler<FormFields> = ({ registerNumber, classId, destinationId }) => {
-    Axios.post("/api/letters", {
+  const onSubmit: SubmitHandler<FormFields> = ({
+    registerNumber,
+    classId,
+    destinationId,
+    batchMode,
+    amount,
+  }) => {
+    Axios.post(batchMode ? "/api/letters/batch" : "/api/letters", {
       destinationId,
       classId,
       registerNumber: registerNumber || undefined,
+      amount,
     })
       .then((res) => {
         setMessage(res.data.message);
@@ -56,9 +68,13 @@ export const LettersForm = () => {
 
   const classOptions = classes?.classes || [];
 
+  const isBatchMode = watch("batchMode");
+
+  console.log(errors);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box>
+      <Box sx={{ display: "flex", flexWrap: "wrap", alignItems: "center" }}>
         <FormControl
           sx={{ width: 300, marginRight: theme.spacing(1) }}
           error={!!errors.destinationId}
@@ -96,15 +112,29 @@ export const LettersForm = () => {
             rules={{ required: true }}
           />
         </FormControl>
-        <FormControl sx={{ width: 300 }}>
-          <TextField
-            {...register("registerNumber", { min: 1 })}
-            placeholder="24"
-            label="Register Number"
-            error={!!errors.registerNumber}
-            type="number"
-          />
-        </FormControl>
+        <FormControlLabel control={<Switch {...register("batchMode")} />} label="Batch mode" />
+        {!isBatchMode && (
+          <FormControl sx={{ width: 300 }}>
+            <TextField
+              {...register("registerNumber", { min: 1 })}
+              placeholder="24"
+              label="Register Number"
+              error={!!errors.registerNumber}
+              type="number"
+            />
+          </FormControl>
+        )}
+        {isBatchMode && (
+          <FormControl sx={{ width: 300 }}>
+            <TextField
+              {...register("amount")}
+              placeholder="10"
+              label="Amount of letters from class"
+              error={!!errors.amount}
+              type="number"
+            />
+          </FormControl>
+        )}
       </Box>
       <Button type="submit" variant="contained" sx={{ marginTop: theme.spacing(1) }}>
         Submit

@@ -11,7 +11,7 @@ export default withApiAuth(
         body: object({
           destinationId: string().required("Destination ID is required"),
           classId: string().required("Class ID is required"),
-          amount: number().required("Amount is required"),
+          amount: number().required("Amount is required").min(1),
         }),
       },
       async (req, res) => {
@@ -42,10 +42,10 @@ export default withApiAuth(
           }
 
           const letters = await prisma.letter.createMany({
-            data: new Array(amount).map(() => ({
+            data: new Array(amount).fill({
               authorId: author!.id,
               destinationId: destination.id,
-            })),
+            }),
           });
 
           return res.json({ message: "Letters created successfully", letters });
