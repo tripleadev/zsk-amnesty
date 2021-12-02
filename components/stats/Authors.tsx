@@ -3,7 +3,7 @@ import { PieChart, Pie, Tooltip, Cell } from "recharts";
 
 const COLORS = ["#FFFF00", "#FFBB28", "#FF8042", "#EA4335", "#CC0000"];
 
-export const Classes = ({ classes }: { classes: { name: string; value: number }[] }) => {
+export const Authors = ({ classes }: { classes: { name: string; value: number }[] }) => {
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
     cx,
@@ -55,7 +55,7 @@ export const Classes = ({ classes }: { classes: { name: string; value: number }[
           fontSize: 36,
         }}
       >
-        Letters by Class
+        Top Authors
       </h1>
       <PieChart width={380} height={380}>
         <Pie

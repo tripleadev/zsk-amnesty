@@ -1,6 +1,27 @@
 import { Box } from "@mui/system";
 import { Paper } from "@mui/material";
 import { HistoryEdu, AccessibilityNew, LocationOn } from "@mui/icons-material";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles({
+  title: {
+    fontFamily: "Amnesty Trade Gothic Bold Condensed",
+    margin: "0",
+    textTransform: "uppercase",
+    fontSize: 36,
+  },
+  number: {
+    fontFamily: "Amnesty Trade Gothic Roman",
+    margin: "0",
+    fontSize: 36,
+  },
+  label: {
+    fontFamily: "Amnesty Trade Gothic Roman",
+    margin: "0",
+    fontSize: 24,
+    color: "rgba(0, 0, 0, 0.6)",
+  },
+});
 
 export const Total = ({
   totalLetters,
@@ -11,19 +32,12 @@ export const Total = ({
   totalDestinations: string;
   totalAuthors: string;
 }) => {
+  const classes = useStyles();
+
   return (
-    <Paper elevation={6} sx={{ p: 3 }}>
+    <Paper elevation={12} sx={{ p: 3 }}>
       <Box sx={{ mb: 1 }}>
-        <h1
-          style={{
-            fontFamily: "Amnesty Trade Gothic Bold Condensed",
-            margin: "0",
-            textTransform: "uppercase",
-            fontSize: 36,
-          }}
-        >
-          Total statistics
-        </h1>
+        <h1 className={classes.title}>Total statistics</h1>
       </Box>
       <Box
         display="grid"
@@ -44,10 +58,10 @@ export const Total = ({
           </Box>
         </Box>
         <Box sx={{ ml: 2, display: "flex", alignItems: "center" }} gridColumn="2" gridRow="1">
-          <h2 style={{ margin: "0", fontSize: 36 }}>{totalLetters}</h2>
+          <h2 className={classes.number}>{totalLetters}</h2>
         </Box>
         <Box sx={{ ml: 2, display: "flex", alignItems: "center" }} gridColumn="2" gridRow="2">
-          <h3 style={{ margin: "0", fontSize: 24 }}>Letters written</h3>
+          <h3 className={classes.label}>Letters written</h3>
         </Box>
         <Box
           gridColumn="3"
@@ -63,10 +77,10 @@ export const Total = ({
           </Box>
         </Box>
         <Box sx={{ ml: 2, display: "flex", alignItems: "center" }} gridColumn="4" gridRow="1">
-          <h2 style={{ margin: "0", fontSize: 36 }}>{totalAuthors}</h2>
+          <h2 className={classes.number}>{totalAuthors}</h2>
         </Box>
         <Box sx={{ ml: 2, display: "flex", alignItems: "center" }} gridColumn="4" gridRow="2">
-          <h3 style={{ margin: "0", fontSize: 24 }}>Participants</h3>
+          <h3 className={classes.label}>Participants</h3>
         </Box>
         <Box
           gridColumn="5"
@@ -82,10 +96,10 @@ export const Total = ({
           </Box>
         </Box>
         <Box sx={{ ml: 2, display: "flex", alignItems: "center" }} gridColumn="6" gridRow="1">
-          <h2 style={{ margin: "0", fontSize: 36 }}>{totalDestinations}</h2>
+          <h2 className={classes.number}>{totalDestinations}</h2>
         </Box>
         <Box sx={{ ml: 2, display: "flex", alignItems: "center" }} gridColumn="6" gridRow="2">
-          <h3 style={{ margin: "0", fontSize: 24 }}>Destinations</h3>
+          <h3 className={classes.label}>Destinations</h3>
         </Box>
       </Box>
     </Paper>
