@@ -1,9 +1,10 @@
 import { InferGetServerSidePropsType } from "next";
 import { withServerSideAuth } from "../../lib/auth/withServerSideAuth";
 import Link from "next/link";
-import { Button, Box, Typography } from "@mui/material";
+import { Button, Box, Typography, useTheme } from "@mui/material";
 
 const AdminPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const theme = useTheme();
   return (
     <Box m={5} textAlign="center">
       <Typography variant="h4" component="h1">
@@ -15,13 +16,25 @@ const AdminPage = ({ user }: InferGetServerSidePropsType<typeof getServerSidePro
         Hello {user.email}!
       </Typography>
       <Box my={5}>
-        <Link href="/admin/admins" passHref>
-          <Button>Lista adminów</Button>
+        <Link href="/admin/letters" passHref>
+          <Button variant="contained" sx={{ marginInline: theme.spacing(1) }}>
+            Letters
+          </Button>
         </Link>
-        {/*Here we'll be adding link to the other routes*/}
+        <Link href="/admin/destinations" passHref>
+          <Button variant="outlined" sx={{ marginInline: theme.spacing(1) }}>
+            Destinations
+          </Button>
+        </Link>
+        <Link href="/admin/admins" passHref>
+          <Button variant="outlined" sx={{ marginInline: theme.spacing(1) }}>
+            Admins
+          </Button>
+        </Link>
+        {/* Here we'll be adding links to the other pages */}
       </Box>
       <Link href="/admin/logout" prefetch={false} passHref>
-        <Button variant="contained">Logout</Button>
+        <Button>Log out</Button>
       </Link>
     </Box>
   );

@@ -37,6 +37,6 @@ export const withApiAuth =
 
       return await handler(req as R & AuthRequestExtend, res);
     } catch {
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({ message: "Unauthorized" });
     }
   };

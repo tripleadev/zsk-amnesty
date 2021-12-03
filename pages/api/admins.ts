@@ -14,11 +14,11 @@ export type AdminSchemaType = Asserts<typeof adminSchema>;
 
 export default withApiAuth(
   withApiMethods({
-    GET: async (req, res) => {
+    GET: async (_req, res) => {
       const allAdmins = await prisma.admin.findMany();
       res.json({ allAdmins });
     },
-    POST: withApiValidation(adminSchema, async (req, res) => {
+    POST: withApiValidation({ body: adminSchema }, async (req, res) => {
       const { email, password } = req.body;
 
       try {

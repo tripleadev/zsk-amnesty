@@ -19,6 +19,7 @@ model Admin {
 
 model Letter {
   id            String      @id @default(uuid())
+  createdAt     DateTime    @default(now())
   destination   Destination @relation(fields: [destinationId], references: [id])
   destinationId String
   author        Author      @relation(fields: [authorId], references: [id])
@@ -28,7 +29,7 @@ model Letter {
 model Author {
   id             String    @id @default(uuid())
   classId        String
-  registerNumber Int
+  registerNumber Int?
   letters        Letter[]
 }
 

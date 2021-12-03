@@ -1,19 +1,21 @@
 import Axios from "axios";
 import { useState } from "react";
-import useSWR, { useSWRConfig } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { InferGetServerSidePropsType } from "next";
 import { withServerSideAuth } from "../../lib/auth/withServerSideAuth";
 import { AdminSchemaType } from "../api/admins";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Alert, Box, Button, FormHelperText, Input, Snackbar } from "@mui/material";
+import { Box, Button, FormHelperText, Input } from "@mui/material";
 import Link from "next/link";
+import Toast from "../../components/common/Toast";
+import { useQuery, useQueryClient } from "react-query";
+import { fetcher } from "../../lib/fetcher";
 
 const columnsObject: GridColDef[] = [{ field: "email", headerName: "Email Adress", width: 300 }];
 
-const AdminsManagmentPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { mutate } = useSWRConfig();
-  const { data } = useSWR("/api/admins");
+const AdminsManagmentPage = () => {
+  const queryClient = useQueryClient();
+  const { data } = useQuery("/api/admins", fetcher("/api/admins"));
+
   const {
     register,
     handleSubmit,
@@ -26,12 +28,12 @@ const AdminsManagmentPage = ({ user }: InferGetServerSidePropsType<typeof getSer
     Axios.post("/api/admins", data)
       .then((res) => {
         setMessage(res.data.message);
+
+        queryClient.invalidateQueries("/api/admins");
       })
       .catch((err) => {
         setError(err.response?.data?.message || "Something went wrong");
       });
-
-    mutate("/api/admins");
   };
 
   return (
@@ -71,16 +73,8 @@ const AdminsManagmentPage = ({ user }: InferGetServerSidePropsType<typeof getSer
         />
       </div>
 
-      <Snackbar open={error ? true : false} autoHideDuration={3000}>
-        <Alert severity="error" sx={{ width: "100%" }}>
-          {error}
-        </Alert>
-      </Snackbar>
-      <Snackbar open={message ? true : false} autoHideDuration={3000}>
-        <Alert severity="success" sx={{ width: "100%" }}>
-          {message}
-        </Alert>
-      </Snackbar>
+      <Toast value={error} severity="error" />
+      <Toast value={message} severity="success" />
     </Box>
   );
 };
