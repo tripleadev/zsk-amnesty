@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import { Paper } from "@mui/material";
+import { Paper, useMediaQuery } from "@mui/material";
 import { HistoryEdu, AccessibilityNew, LocationOn } from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
 
@@ -33,73 +33,121 @@ export const Total = ({
   totalAuthors: string;
 }) => {
   const classes = useStyles();
+  const mobileLayout = useMediaQuery("(max-width:1250px)");
+  const smallText = useMediaQuery("(max-width: 1450px)");
+  const numSize = smallText ? 28 : 36;
+  const labelSize = smallText ? 18 : 24;
 
   return (
-    <Paper elevation={12} sx={{ p: 3 }}>
+    <Paper
+      elevation={12}
+      sx={{ p: 3, height: "100%", display: "grid", gridTemplateRows: "auto 1fr" }}
+    >
       <Box sx={{ mb: 1 }}>
         <h1 className={classes.title}>Total statistics</h1>
       </Box>
-      <Box
-        display="grid"
-        gridTemplateColumns="48px 1fr 48px 1fr 48px 1fr"
-        gridTemplateRows="1fr 0.5fr"
-      >
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
         <Box
-          gridColumn="1"
-          gridRow="1"
-          sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+          sx={{
+            display: "grid",
+            gridTemplateColumns: mobileLayout ? "48px 1fr" : "48px 1fr 48px 1fr 48px 1fr",
+            gridTemplateRows: mobileLayout ? "1fr 0.5fr 1fr 0.5fr 1fr 0.5fr" : "1fr 0.5fr",
+            gridColumnGap: "1.5rem",
+          }}
         >
           <Box
-            sx={{ p: 1, width: 48, height: 48, borderRadius: "50%", backgroundColor: "#ffff00" }}
+            gridColumn={mobileLayout ? "1" : "1"}
+            gridRow={mobileLayout ? "1" : "1"}
+            sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
           >
-            <Box sx={{ height: 30 }}>
-              <HistoryEdu sx={{ fontSize: 30 }} />
+            <Box
+              sx={{ p: 1, width: 48, height: 48, borderRadius: "50%", backgroundColor: "#ffff00" }}
+            >
+              <Box sx={{ height: 30 }}>
+                <HistoryEdu sx={{ fontSize: 30 }} />
+              </Box>
             </Box>
           </Box>
-        </Box>
-        <Box sx={{ ml: 2, display: "flex", alignItems: "center" }} gridColumn="2" gridRow="1">
-          <h2 className={classes.number}>{totalLetters}</h2>
-        </Box>
-        <Box sx={{ ml: 2, display: "flex", alignItems: "center" }} gridColumn="2" gridRow="2">
-          <h3 className={classes.label}>Letters written</h3>
-        </Box>
-        <Box
-          gridColumn="3"
-          gridRow="1"
-          sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-        >
           <Box
-            sx={{ p: 1, width: 48, height: 48, borderRadius: "50%", backgroundColor: "#ffff00" }}
+            sx={{ display: "flex", alignItems: "center" }}
+            gridColumn={mobileLayout ? "2" : "2"}
+            gridRow={mobileLayout ? "1" : "1"}
           >
-            <Box sx={{ height: 30 }}>
-              <AccessibilityNew sx={{ fontSize: 30 }} />
-            </Box>
+            <h2 className={classes.number} style={{ fontSize: numSize }}>
+              {totalLetters}
+            </h2>
           </Box>
-        </Box>
-        <Box sx={{ ml: 2, display: "flex", alignItems: "center" }} gridColumn="4" gridRow="1">
-          <h2 className={classes.number}>{totalAuthors}</h2>
-        </Box>
-        <Box sx={{ ml: 2, display: "flex", alignItems: "center" }} gridColumn="4" gridRow="2">
-          <h3 className={classes.label}>Participants</h3>
-        </Box>
-        <Box
-          gridColumn="5"
-          gridRow="1"
-          sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-        >
           <Box
-            sx={{ p: 1, width: 48, height: 48, borderRadius: "50%", backgroundColor: "#ffff00" }}
+            sx={{ display: "flex", alignItems: "center" }}
+            gridColumn={mobileLayout ? "2" : "2"}
+            gridRow={mobileLayout ? "2" : "2"}
           >
-            <Box sx={{ height: 30 }}>
-              <LocationOn sx={{ fontSize: 30 }} />
+            <h3 className={classes.label} style={{ fontSize: labelSize }}>
+              Letters written
+            </h3>
+          </Box>
+          <Box
+            gridColumn={mobileLayout ? "1" : "3"}
+            gridRow={mobileLayout ? "3" : "1"}
+            sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+          >
+            <Box
+              sx={{ p: 1, width: 48, height: 48, borderRadius: "50%", backgroundColor: "#ffff00" }}
+            >
+              <Box sx={{ height: 30 }}>
+                <AccessibilityNew sx={{ fontSize: 30 }} />
+              </Box>
             </Box>
           </Box>
-        </Box>
-        <Box sx={{ ml: 2, display: "flex", alignItems: "center" }} gridColumn="6" gridRow="1">
-          <h2 className={classes.number}>{totalDestinations}</h2>
-        </Box>
-        <Box sx={{ ml: 2, display: "flex", alignItems: "center" }} gridColumn="6" gridRow="2">
-          <h3 className={classes.label}>Destinations</h3>
+          <Box
+            sx={{ display: "flex", alignItems: "center" }}
+            gridColumn={mobileLayout ? "2" : "4"}
+            gridRow={mobileLayout ? "3" : "1"}
+          >
+            <h2 className={classes.number} style={{ fontSize: numSize }}>
+              {totalAuthors}
+            </h2>
+          </Box>
+          <Box
+            sx={{ display: "flex", alignItems: "center" }}
+            gridColumn={mobileLayout ? "2" : "4"}
+            gridRow={mobileLayout ? "4" : "2"}
+          >
+            <h3 className={classes.label} style={{ fontSize: labelSize }}>
+              Participants
+            </h3>
+          </Box>
+          <Box
+            gridColumn={mobileLayout ? "1" : "5"}
+            gridRow={mobileLayout ? "5" : "1"}
+            sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+          >
+            <Box
+              sx={{ p: 1, width: 48, height: 48, borderRadius: "50%", backgroundColor: "#ffff00" }}
+            >
+              <Box sx={{ height: 30 }}>
+                <LocationOn sx={{ fontSize: 30 }} />
+              </Box>
+            </Box>
+          </Box>
+          <Box
+            sx={{ display: "flex", alignItems: "center" }}
+            gridColumn={mobileLayout ? "2" : "6"}
+            gridRow={mobileLayout ? "5" : "1"}
+          >
+            <h2 className={classes.number} style={{ fontSize: numSize }}>
+              {totalDestinations}
+            </h2>
+          </Box>
+          <Box
+            sx={{ display: "flex", alignItems: "center" }}
+            gridColumn={mobileLayout ? "2" : "6"}
+            gridRow={mobileLayout ? "6" : "2"}
+          >
+            <h3 className={classes.label} style={{ fontSize: labelSize }}>
+              Destinations
+            </h3>
+          </Box>
         </Box>
       </Box>
     </Paper>

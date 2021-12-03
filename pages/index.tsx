@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { Box, Paper } from "@mui/material";
+import { Box, Paper, useMediaQuery } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Image from "next/image";
 
@@ -30,13 +30,21 @@ const useStyles = makeStyles({
 const Home = () => {
   const { data, error } = useSWR<StatsResponse>("/api/stats", fetcher, { refreshInterval: 5000 });
   const classes = useStyles();
+  const mobileLayout = useMediaQuery("(max-width:1250px)");
 
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
 
   return (
-    <Box className={classes.grid}>
-      <Box style={{ gridRow: "1 / 3", gridColumn: "1 / 4" }}>
+    <Box
+      className={classes.grid}
+      style={
+        mobileLayout ? { gridTemplateColumns: "auto", gridTemplateRows: "repeat(5, auto)" } : {}
+      }
+    >
+      <Box
+        style={{ gridRow: mobileLayout ? "1" : "1 / 3", gridColumn: mobileLayout ? "1" : "1 / 4" }}
+      >
         <Paper
           elevation={12}
           sx={{
@@ -49,7 +57,12 @@ const Home = () => {
             alignItems: "center",
           }}
         >
-          <Image src="/logo.png" alt="Amnesty International Logo" width={400} height={400} />
+          <Image
+            src="/logo.png"
+            alt="Amnesty International Logo"
+            width={mobileLayout ? 200 : 400}
+            height={mobileLayout ? 200 : 400}
+          />
           <h1
             style={{
               fontFamily: "Amnesty Trade Gothic Bold Condensed",
@@ -63,14 +76,14 @@ const Home = () => {
           </h1>
         </Paper>
       </Box>
-      <Box style={{ gridRow: "1", gridColumn: "4 / 10" }}>
+      <Box style={{ gridRow: mobileLayout ? "2" : "1", gridColumn: mobileLayout ? "1" : "4 / 10" }}>
         <Total
           totalLetters={data.totalLetters}
           totalDestinations={data.totalDestinations}
           totalAuthors={data.totalAuthors}
         />
       </Box>
-      <Box style={{ gridRow: "2", gridColumn: "4 / 10" }}>
+      <Box style={{ gridRow: mobileLayout ? "3" : "2", gridColumn: mobileLayout ? "1" : "4 / 10" }}>
         <Authors
           authors={Object.keys(data)
             .filter((key) => key.startsWith("top."))
@@ -82,7 +95,12 @@ const Home = () => {
             })}
         />
       </Box>
-      <Box style={{ gridRow: "1 / 3", gridColumn: "10 / 13" }}>
+      <Box
+        style={{
+          gridRow: mobileLayout ? "4" : "1 / 3",
+          gridColumn: mobileLayout ? "1" : "10 / 13",
+        }}
+      >
         <Classes
           classes={Object.keys(data)
             .filter((key) => key.startsWith("lettersOfClass."))
@@ -94,8 +112,7 @@ const Home = () => {
             })}
         />
       </Box>
-
-      <Box style={{ gridRow: "3", gridColumn: "1 / 13" }}>
+      <Box style={{ gridRow: mobileLayout ? "5" : "3", gridColumn: mobileLayout ? "1" : "1 / 13" }}>
         <Destinations
           destinations={Object.keys(data)
             .filter((key) => key.startsWith("lettersTo."))

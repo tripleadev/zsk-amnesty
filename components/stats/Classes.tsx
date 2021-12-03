@@ -1,9 +1,13 @@
 import { Paper, Box } from "@mui/material";
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from "recharts";
+import { useMediaQuery } from "@mui/material";
 
 const COLORS = ["#FFFF00", "#FFBB28", "#FF8042", "#EA4335", "#CC0000"];
 
 export const Classes = ({ classes }: { classes: { name: string; value: number }[] }) => {
+  const smallChart = useMediaQuery("(max-width:1660px)");
+  const width = smallChart ? 250 : 350;
+
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
     cx,
@@ -22,8 +26,6 @@ export const Classes = ({ classes }: { classes: { name: string; value: number }[
     percent: number;
     index: number;
   }) => {
-    // const windowWidth = useMediaQuery("(min-width:600px)");
-
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
@@ -54,9 +56,8 @@ export const Classes = ({ classes }: { classes: { name: string; value: number }[
         p: 3,
         width: "100%",
         height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
+        display: "grid",
+        gridTemplateRows: "auto 1fr",
       }}
     >
       <h1
@@ -69,25 +70,27 @@ export const Classes = ({ classes }: { classes: { name: string; value: number }[
       >
         Letters by Class
       </h1>
-      <ResponsiveContainer height={350} width="100%">
-        <PieChart width={350} height={350}>
-          <Pie
-            dataKey="value"
-            isAnimationActive={false}
-            data={classes}
-            labelLine={false}
-            label={renderCustomizedLabel}
-            cx="50%"
-            cy="50%"
-            outerRadius={175}
-          >
-            {classes.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip />
-        </PieChart>
-      </ResponsiveContainer>
+      <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+        <ResponsiveContainer height={width} width="100%">
+          <PieChart width={width} height={width}>
+            <Pie
+              dataKey="value"
+              isAnimationActive={false}
+              data={classes}
+              labelLine={false}
+              label={renderCustomizedLabel}
+              cx="50%"
+              cy="50%"
+              outerRadius={width / 2}
+            >
+              {classes.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+          </PieChart>
+        </ResponsiveContainer>
+      </Box>
     </Paper>
   );
 };
