@@ -4,8 +4,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { withServerSideAuth } from "../../lib/auth/withServerSideAuth";
 import { AdminSchemaType } from "../api/admins";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Alert, Box, Button, FormHelperText, Input, Snackbar } from "@mui/material";
+import { Box, Button, FormHelperText, Input } from "@mui/material";
 import Link from "next/link";
+import Toast from "../../components/common/Toast";
 import { useQuery, useQueryClient } from "react-query";
 import { fetcher } from "../../lib/fetcher";
 
@@ -72,16 +73,8 @@ const AdminsManagmentPage = () => {
         />
       </div>
 
-      <Snackbar open={error ? true : false} autoHideDuration={3000}>
-        <Alert severity="error" sx={{ width: "100%" }}>
-          {error}
-        </Alert>
-      </Snackbar>
-      <Snackbar open={message ? true : false} autoHideDuration={3000}>
-        <Alert severity="success" sx={{ width: "100%" }}>
-          {message}
-        </Alert>
-      </Snackbar>
+      <Toast value={error} severity="error" />
+      <Toast value={message} severity="success" />
     </Box>
   );
 };
