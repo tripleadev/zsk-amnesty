@@ -1,6 +1,7 @@
 import useSWR from "swr";
-import { Box } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import Image from "next/image";
 
 import { Total } from "../components/stats/Total";
 import { Classes } from "../components/stats/Classes";
@@ -16,13 +17,13 @@ async function fetcher<JSON = any>(input: RequestInfo, init?: RequestInit): Prom
 
 const useStyles = makeStyles({
   grid: {
-    padding: "3rem",
+    padding: "1rem",
     height: "100vh",
     display: "grid",
     gridTemplateColumns: "repeat(12, 1fr)",
     gridTemplateRows: "1fr 1fr 2fr",
-    gridGap: "2rem",
-    backgroundColor: "#aaaaaa",
+    gridGap: "1rem",
+    backgroundColor: "#eeeeee",
   },
 });
 
@@ -35,11 +36,50 @@ const Home = () => {
 
   return (
     <Box className={classes.grid}>
-      <Box style={{ gridRow: "1", gridColumn: "1 / 6" }}>
+      <Box style={{ gridRow: "1 / 3", gridColumn: "1 / 4" }}>
+        <Paper
+          elevation={12}
+          sx={{
+            p: 3,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Image src="/logo.png" alt="Amnesty International Logo" width={400} height={400} />
+          <h1
+            style={{
+              fontFamily: "Amnesty Trade Gothic Bold Condensed",
+              margin: "0",
+              textTransform: "uppercase",
+              fontSize: 36,
+              textAlign: "center",
+            }}
+          >
+            Amnesty International ZSK
+          </h1>
+        </Paper>
+      </Box>
+      <Box style={{ gridRow: "1", gridColumn: "4 / 10" }}>
         <Total
           totalLetters={data.totalLetters}
           totalDestinations={data.totalDestinations}
           totalAuthors={data.totalAuthors}
+        />
+      </Box>
+      <Box style={{ gridRow: "2", gridColumn: "4 / 10" }}>
+        <Authors
+          authors={Object.keys(data)
+            .filter((key) => key.startsWith("top."))
+            .map((key) => {
+              return {
+                name: `${key.split(".")[2]} ${key.split(".")[3]}`,
+                value: parseInt(data[key]),
+              };
+            })}
         />
       </Box>
       <Box style={{ gridRow: "1 / 3", gridColumn: "10 / 13" }}>
@@ -54,23 +94,7 @@ const Home = () => {
             })}
         />
       </Box>
-      <Box style={{ gridRow: "2", gridColumn: "1/6" }}>
-        <Authors
-          authors={Object.keys(data)
-            .filter(
-              (key) =>
-                key.startsWith("top1Author.") ||
-                key.startsWith("top2Author.") ||
-                key.startsWith("top3Author."),
-            )
-            .map((key) => {
-              return {
-                name: key.replace("lettersOfAuthor.", "").replace(".", " "),
-                value: data[key],
-              };
-            })}
-        />
-      </Box>
+
       <Box style={{ gridRow: "3", gridColumn: "1 / 13" }}>
         <Destinations
           destinations={Object.keys(data)
