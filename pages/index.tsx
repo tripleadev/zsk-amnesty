@@ -18,7 +18,7 @@ async function fetcher<JSON = any>(input: RequestInfo, init?: RequestInit): Prom
 const useStyles = makeStyles({
   grid: {
     padding: "1rem",
-    height: "100vh",
+    minHeight: "100vh",
     display: "grid",
     gridTemplateColumns: "repeat(12, 1fr)",
     gridTemplateRows: "1fr 1fr 2fr",
