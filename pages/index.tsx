@@ -18,7 +18,6 @@ async function fetcher<JSON = any>(input: RequestInfo, init?: RequestInit): Prom
 const useStyles = makeStyles({
   grid: {
     padding: "1rem",
-    minHeight: "100vh",
     display: "grid",
     gridTemplateColumns: "repeat(12, 1fr)",
     gridTemplateRows: "1fr 1fr 2fr",
@@ -39,7 +38,9 @@ const Home = () => {
     <Box
       className={classes.grid}
       style={
-        mobileLayout ? { gridTemplateColumns: "auto", gridTemplateRows: "repeat(5, auto)" } : {}
+        mobileLayout
+          ? { gridTemplateColumns: "auto", gridTemplateRows: "repeat(5, auto)", minHeight: "100vh" }
+          : { height: "100vh" }
       }
     >
       <Box
