@@ -3,22 +3,19 @@ import type { AppProps } from "next/app";
 import { CssBaseline } from "@mui/material";
 import { Footer } from "../components/common/Footer";
 import { Box } from "@mui/system";
-import { SWRConfig } from "swr";
-import Axios from "axios";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <SWRConfig
-      value={{
-        fetcher: (url: string) => Axios.get(url).then((res) => res.data),
-      }}
-    >
+    <QueryClientProvider client={queryClient}>
       <CssBaseline />
       <Box sx={{ minHeight: "100vh" }}>
         <Component {...pageProps} />
       </Box>
       <Footer />
-    </SWRConfig>
+    </QueryClientProvider>
   );
 }
 
