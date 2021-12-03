@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["dataProxy"]
 }
 
@@ -15,6 +15,28 @@ model Admin {
   password  String
 
   sessions Session[]
+}
+
+model Letter {
+  id            String      @id @default(uuid())
+  createdAt     DateTime    @default(now())
+  destination   Destination @relation(fields: [destinationId], references: [id])
+  destinationId String
+  author        Author      @relation(fields: [authorId], references: [id])
+  authorId      String
+}
+
+model Author {
+  id             String   @id @default(uuid())
+  classId        String
+  registerNumber Int?
+  letters        Letter[]
+}
+
+model Destination {
+  id      String   @id @default(uuid())
+  name    String
+  letters Letter[]
 }
 
 model Session {
