@@ -28,8 +28,6 @@ const Home = () => {
 
   if (!data) return <div>loading...</div>;
 
-  console.log(data);
-
   return (
     <Box
       className={classes.grid}
