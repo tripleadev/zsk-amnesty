@@ -1,13 +1,11 @@
 import { Destination } from "@prisma/client";
 import {
-  Alert,
   Button,
   FormControl,
   FormControlLabel,
   InputLabel,
   MenuItem,
   Select,
-  Snackbar,
   Switch,
   TextField,
   useTheme,
@@ -19,6 +17,7 @@ import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import Axios from "axios";
 import { useQuery, useQueryClient } from "react-query";
 import { fetcher } from "../../lib/fetcher";
+import Toast from "../common/Toast";
 
 type FormFields = {
   destinationId: string;
@@ -145,16 +144,8 @@ export const LettersForm = () => {
         Submit
       </Button>
 
-      <Snackbar open={!!error} autoHideDuration={3000}>
-        <Alert severity="error" sx={{ width: "100%" }}>
-          {error}
-        </Alert>
-      </Snackbar>
-      <Snackbar open={!!message} autoHideDuration={3000}>
-        <Alert severity="success" sx={{ width: "100%" }}>
-          {message}
-        </Alert>
-      </Snackbar>
+      <Toast value={error} severity="error" />
+      <Toast value={message} severity="success" />
     </form>
   );
 };
