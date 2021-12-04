@@ -9,7 +9,7 @@ import { anonymousLettersTo } from "./anonymousLettersTo";
 import { topAuthors } from "./topAuthors";
 import { Stat } from "@prisma/client";
 
-export const generate = async () => {
+export const generateStats = async () => {
   const letters = await prisma.letter.findMany();
   const authors = await prisma.author.findMany({ include: { letters: true } });
   const destinations = await prisma.destination.findMany({ include: { letters: true } });
@@ -45,35 +45,27 @@ export const generate = async () => {
   };
 };
 
-export const update = async () => {
-  const stats = await prisma.stat.findMany();
+export const updateStats = async (newStats: object) => {
+  const upserts = Object.entries(newStats).map(([key, value]) =>
+    prisma.stat.upsert({
+      where: {
+        id: key,
+      },
+      update: {
+        value: String(value),
+        updatedAt: new Date(Date.now()),
+      },
+      create: {
+        id: key,
+        value: String(value),
+        updatedAt: new Date(Date.now()),
+      },
+    }),
+  );
 
-  if (areExpired(stats)) {
-    const newStats = await generate();
-
-    const upserts = Object.entries(newStats).map(([key, value]) =>
-      prisma.stat.upsert({
-        where: {
-          id: key,
-        },
-        update: {
-          value: String(value),
-          updatedAt: new Date(Date.now()),
-        },
-        create: {
-          id: key,
-          value: String(value),
-          updatedAt: new Date(Date.now()),
-        },
-      }),
-    );
-
-    await prisma.$transaction(upserts);
-
-    return newStats;
-  } else return Object.fromEntries(stats.map((stat) => [stat.id, stat.value]));
+  await prisma.$transaction(upserts);
 };
 
-export const areExpired = (stats: Stat[]) => {
+export const statsAreExpired = (stats: Stat[]) => {
   return !stats.length || stats[0]?.updatedAt < new Date(Date.now() - 1000 * 10);
 };

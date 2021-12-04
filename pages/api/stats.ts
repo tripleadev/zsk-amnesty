@@ -1,10 +1,17 @@
 import { withApiMethods } from "../../lib/withApiMethods";
-import * as stats from "../../lib/stats/stats";
+import { prisma } from "../../lib/db";
+import { statsAreExpired, generateStats, updateStats } from "../../lib/stats/stats";
 
 export default withApiMethods({
   GET: async (req, res) => {
-    const newStats = await stats.update();
+    const stats = await prisma.stat.findMany();
 
-    return res.json(newStats);
+    if (statsAreExpired(stats)) {
+      const newStats = await generateStats();
+      await updateStats(newStats);
+      return res.json(newStats);
+    }
+
+    return res.json(stats);
   },
 });
