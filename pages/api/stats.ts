@@ -12,6 +12,6 @@ export default withApiMethods({
       return res.json(newStats);
     }
 
-    return res.json(stats);
+    return res.json(Object.fromEntries(stats.map((stat) => [stat.id, stat.value])));
   },
 });
