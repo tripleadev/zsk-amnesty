@@ -1,4 +1,3 @@
-import { InferGetServerSidePropsType } from "next";
 import { withServerSideAuth } from "../../lib/auth/withServerSideAuth";
 import { useState } from "react";
 import {

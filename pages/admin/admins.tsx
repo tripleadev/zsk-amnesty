@@ -3,7 +3,7 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { withServerSideAuth } from "../../lib/auth/withServerSideAuth";
 import { AdminSchemaType } from "../api/admins";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridSelectionModel } from "@mui/x-data-grid";
 import { Box, Button, FormHelperText, Input } from "@mui/material";
 import Link from "next/link";
 import Toast from "../../components/common/Toast";
@@ -15,6 +15,7 @@ const columnsObject: GridColDef[] = [{ field: "email", headerName: "Email Adress
 const AdminsManagmentPage = () => {
   const queryClient = useQueryClient();
   const { data } = useQuery("/api/admins", fetcher("/api/admins"));
+  const [adminsToDelete, setAdminsToDelete] = useState<GridSelectionModel>([]);
 
   const {
     register,
@@ -26,6 +27,18 @@ const AdminsManagmentPage = () => {
 
   const onSubmit: SubmitHandler<AdminSchemaType> = (data) => {
     Axios.post("/api/admins", data)
+      .then((res) => {
+        setMessage(res.data.message);
+
+        queryClient.invalidateQueries("/api/admins");
+      })
+      .catch((err) => {
+        setError(err.response?.data?.message || "Something went wrong");
+      });
+  };
+
+  const handleDelete = (adminsToDelete: GridSelectionModel) => {
+    Axios.delete("/api/admins", { data: { ids: adminsToDelete } })
       .then((res) => {
         setMessage(res.data.message);
 
@@ -69,9 +82,18 @@ const AdminsManagmentPage = () => {
           rows={data?.allAdmins}
           columns={columnsObject}
           autoPageSize
-          disableSelectionOnClick
+          checkboxSelection
+          onSelectionModelChange={(selected) => setAdminsToDelete(selected)}
         />
       </div>
+      <Button
+        sx={{ mt: 3 }}
+        variant="contained"
+        color="error"
+        onClick={() => handleDelete(adminsToDelete)}
+      >
+        Delete selected admins
+      </Button>
 
       <Toast value={error} severity="error" />
       <Toast value={message} severity="success" />

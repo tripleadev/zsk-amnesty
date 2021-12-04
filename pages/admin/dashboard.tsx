@@ -31,6 +31,11 @@ const AdminPage = ({ user }: InferGetServerSidePropsType<typeof getServerSidePro
             Admins
           </Button>
         </Link>
+        <Link href="/admin/changePassword" passHref>
+          <Button variant="outlined" sx={{ marginInline: theme.spacing(1) }}>
+            Change password
+          </Button>
+        </Link>
         {/* Here we'll be adding links to the other pages */}
       </Box>
       <Link href="/admin/logout" prefetch={false} passHref>
