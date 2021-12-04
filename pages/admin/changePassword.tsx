@@ -27,12 +27,7 @@ function ChangePassword({ user }: InferGetServerSidePropsType<typeof getServerSi
 
     Axios.post("/api/changePassword", data)
       .then((res) => {
-        if (res.data.message) {
-          setMessage(res.data.message);
-        }
-        if (res.data.errorMessage) {
-          setError(res.data.errorMessage);
-        }
+        setMessage(res.data.message);
 
         queryClient.invalidateQueries("/api/changePassword");
       })

@@ -44,11 +44,13 @@ export default withApiAuth(
       const { ids } = req.body;
 
       try {
-        ids.forEach(async (adminId) => {
-          await prisma.admin.delete({
-            where: { id: adminId },
-          });
-        });
+        await prisma.$transaction(
+          ids.map((adminId) =>
+            prisma.admin.delete({
+              where: { id: adminId },
+            }),
+          ),
+        );
 
         return res.json({ message: "Admin has been deleted successfully" });
       } catch {

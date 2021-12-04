@@ -19,8 +19,8 @@ export default withApiAuth(
     POST: withApiValidation({ body: changePasswordSchema }, async (req, res) => {
       const { oldPassword, newPassword, hashedOldPassword, id } = req.body;
 
-      if (await compare(oldPassword, hashedOldPassword)) {
-        try {
+      try {
+        if (await compare(oldPassword, hashedOldPassword)) {
           const hashedNewPassword = await hash(newPassword);
 
           const changedAdmin = await prisma.admin.update({
@@ -32,11 +32,11 @@ export default withApiAuth(
             message: "Admin password has been changed successfully",
             changedAdmin,
           });
-        } catch {
-          return res.status(500).json({ message: "Internal server error" });
+        } else {
+          return res.status(420).json({ message: "Bad old password" });
         }
-      } else {
-        return res.json({ errorMessage: "Bad old password" });
+      } catch {
+        return res.status(500).json({ message: "Internal server error" });
       }
     }),
   }),
