@@ -14,7 +14,7 @@ model Admin {
   email     String   @unique
   password  String
 
-  sessions  Session[]
+  sessions Session[]
 }
 
 model Letter {
@@ -27,14 +27,14 @@ model Letter {
 }
 
 model Author {
-  id             String    @id @default(uuid())
+  id             String   @id @default(uuid())
   classId        String
   registerNumber Int?
   letters        Letter[]
 }
 
 model Destination {
-  id      String    @id @default(uuid())
+  id      String   @id @default(uuid())
   name    String
   letters Letter[]
 }
@@ -45,8 +45,8 @@ model Session {
   updatedAt DateTime @updatedAt
   expiresAt DateTime
 
-  user      Admin    @relation(fields: [userId], references: [id])
-  userId    String
+  user   Admin  @relation(fields: [userId], references: [id])
+  userId String
 }
 
 model Stat {

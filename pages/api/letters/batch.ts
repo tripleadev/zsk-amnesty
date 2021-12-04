@@ -28,6 +28,7 @@ export default withApiAuth(
             author = await prisma.author.create({
               data: {
                 classId,
+                registerNumber: undefined,
               },
             });
           }
