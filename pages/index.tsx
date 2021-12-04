@@ -3,6 +3,7 @@ import { fetcher } from "../lib/fetcher";
 import { Box, Paper, useMediaQuery } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Image from "next/image";
+import { extractFilters } from "../lib/stats/format";
 
 import { Total } from "../components/stats/Total";
 import { Classes } from "../components/stats/Classes";
@@ -81,14 +82,12 @@ const Home = () => {
       </Box>
       <Box style={{ gridRow: mobileLayout ? "3" : "2", gridColumn: mobileLayout ? "1" : "4 / 10" }}>
         <Authors
-          authors={Object.keys(data)
-            .filter((key) => key.startsWith("top."))
-            .map((key) => {
-              return {
-                name: `${key.split(".")[2]} ${key.split(".")[3]}`,
-                value: parseInt(data[key]),
-              };
-            })}
+          authors={extractFilters(data, "top.").map((key) => {
+            return {
+              name: `${key.split(".")[2]} ${key.split(".")[3]}`,
+              value: parseInt(data[key]),
+            };
+          })}
         />
       </Box>
       <Box
@@ -98,30 +97,26 @@ const Home = () => {
         }}
       >
         <Classes
-          classes={Object.keys(data)
-            .filter((key) => key.startsWith("lettersOfClass."))
-            .map((key) => {
-              return {
-                name: key.replace("lettersOfClass.", ""),
-                value: parseInt(data[key]),
-              };
-            })}
+          classes={extractFilters(data, "lettersOfClass.").map((key) => {
+            return {
+              name: key.replace("lettersOfClass.", ""),
+              value: parseInt(data[key]),
+            };
+          })}
         />
       </Box>
       <Box style={{ gridRow: mobileLayout ? "5" : "3", gridColumn: mobileLayout ? "1" : "1 / 13" }}>
         <Destinations
-          destinations={Object.keys(data)
-            .filter((key) => key.startsWith("lettersTo."))
-            .map((key) => {
-              return {
-                name: key.replace(
-                  key.startsWith("lettersTo.") ? "lettersTo." : "anonymous.lettersTo",
-                  "",
-                ),
-                authored: parseInt(data[key]),
-                anonymous: parseInt(data[`anonymous.${key}`]),
-              };
-            })}
+          destinations={extractFilters(data, "lettersTo.").map((key) => {
+            return {
+              name: key.replace(
+                key.startsWith("lettersTo.") ? "lettersTo." : "anonymous.lettersTo",
+                "",
+              ),
+              authored: parseInt(data[key]),
+              anonymous: parseInt(data[`anonymous.${key}`]),
+            };
+          })}
         />
       </Box>
     </Box>
