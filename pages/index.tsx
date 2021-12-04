@@ -1,4 +1,5 @@
-import useSWR from "swr";
+import { useQuery } from "react-query";
+import { fetcher } from "../lib/fetcher";
 import { Box, Paper, useMediaQuery } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Image from "next/image";
@@ -7,13 +8,6 @@ import { Total } from "../components/stats/Total";
 import { Classes } from "../components/stats/Classes";
 import { Destinations } from "../components/stats/Destinations";
 import { Authors } from "../components/stats/Authors";
-
-type StatsResponse = Record<string, string>;
-
-async function fetcher<JSON = any>(input: RequestInfo, init?: RequestInit): Promise<JSON> {
-  const res = await fetch(input, init);
-  return res.json();
-}
 
 const useStyles = makeStyles({
   grid: {
@@ -27,12 +21,13 @@ const useStyles = makeStyles({
 });
 
 const Home = () => {
-  const { data, error } = useSWR<StatsResponse>("/api/stats", fetcher, { refreshInterval: 5000 });
+  const { data } = useQuery("/api/stats", fetcher("/api/stats"), { refetchInterval: 5000 });
   const classes = useStyles();
   const mobileLayout = useMediaQuery("(max-width:1250px)");
 
-  if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
+
+  console.log(data);
 
   return (
     <Box
