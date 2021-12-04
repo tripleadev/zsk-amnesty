@@ -1,3 +1,13 @@
+@font-face {
+  font-family: "Amnesty Trade Gothic Bold Condensed";
+  src: url("/AmnestyTradeGothicBold.ttf");
+}
+
+@font-face {
+  font-family: "Amnesty Trade Gothic Roman";
+  src: url("/AmnestyTradeGothic.ttf");
+}
+
 html,
 body {
   padding: 0;
