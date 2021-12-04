@@ -45,7 +45,7 @@ export const generateStats = async () => {
   };
 };
 
-export const updateStats = async (newStats: object) => {
+export const updateStats = (newStats: object) => {
   const upserts = Object.entries(newStats).map(([key, value]) =>
     prisma.stat.upsert({
       where: {
@@ -63,7 +63,7 @@ export const updateStats = async (newStats: object) => {
     }),
   );
 
-  await prisma.$transaction(upserts);
+  return prisma.$transaction(upserts);
 };
 
 export const statsAreExpired = (stats: Stat[]) => {
