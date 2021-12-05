@@ -2,11 +2,14 @@ import { InferGetServerSidePropsType } from "next";
 import { withServerSideAuth } from "../../lib/auth/withServerSideAuth";
 import Link from "next/link";
 import { Button, Box, Typography, useTheme } from "@mui/material";
+import { SEO } from "../../components/common/SEO";
 
 const AdminPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const theme = useTheme();
   return (
     <Box m={5} textAlign="center">
+      <SEO title="Dashboard" />
+
       <Typography variant="h4" component="h1">
         Maraton Pisana Listów
         <br />

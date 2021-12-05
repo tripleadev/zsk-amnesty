@@ -4,6 +4,7 @@ import { Box, Paper, useMediaQuery } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Image from "next/image";
 import { extractFilters } from "../lib/stats/format";
+import { SEO } from "../components/common/SEO";
 
 import { Total } from "../components/stats/Total";
 import { Classes } from "../components/stats/Classes";
@@ -46,6 +47,7 @@ const Home = ({ initialData }: InferGetStaticPropsType<typeof getStaticProps>) =
           : { height: "100vh" }
       }
     >
+      <SEO />
       <Box
         style={{ gridRow: mobileLayout ? "1" : "1 / 3", gridColumn: mobileLayout ? "1" : "1 / 4" }}
       >

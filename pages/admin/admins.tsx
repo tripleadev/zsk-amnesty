@@ -10,6 +10,7 @@ import Toast from "../../components/common/Toast";
 import { useQuery, useQueryClient } from "react-query";
 import { fetcher } from "../../lib/fetcher";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { SEO } from "../../components/common/SEO";
 
 const columnsObject: GridColDef[] = [{ field: "email", headerName: "Email Adress", width: 300 }];
 
@@ -54,6 +55,7 @@ const AdminsManagmentPage = () => {
 
   return (
     <Box m={5}>
+      <SEO title="Manage Admins" />
       <Link href="/admin/dashboard" passHref>
         <Button sx={{ mb: 3 }}>Dashboard</Button>
       </Link>

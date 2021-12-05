@@ -18,6 +18,7 @@ import Toast from "../../components/common/Toast";
 import { useQuery, useQueryClient } from "react-query";
 import { fetcher } from "../../lib/fetcher";
 import type { DestinationType } from "../api/destinations";
+import { SEO } from "../../components/common/SEO";
 
 const DestinationsManagementPage = () => {
   const { data } = useQuery("/api/destinations", fetcher("/api/destinations"));
@@ -44,6 +45,7 @@ const DestinationsManagementPage = () => {
 
   return (
     <Box m={5}>
+      <SEO title="Destinations" />
       <Link href="/admin/dashboard" passHref>
         <Button sx={{ mb: 3 }}>Dashboard</Button>
       </Link>
