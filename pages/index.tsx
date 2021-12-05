@@ -4,12 +4,15 @@ import { Box, Paper, useMediaQuery } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Image from "next/image";
 import { extractFilters } from "../lib/stats/format";
+import { SEO } from "../components/common/SEO";
 
 import { Total } from "../components/stats/Total";
 import { Classes } from "../components/stats/Classes";
 import { Destinations } from "../components/stats/Destinations";
 import { Authors } from "../components/stats/Authors";
 import { useReloadOnResize } from "../lib/hooks/useReloadOnResize";
+import { InferGetStaticPropsType } from "next";
+import { generateStats } from "../lib/stats/stats";
 
 const useStyles = makeStyles({
   grid: {
@@ -22,8 +25,11 @@ const useStyles = makeStyles({
   },
 });
 
-const Home = () => {
-  const { data } = useQuery("/api/stats", fetcher("/api/stats"), { refetchInterval: 5000 });
+const Home = ({ initialData }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { data } = useQuery("/api/stats", fetcher("/api/stats"), {
+    refetchInterval: 5000,
+    initialData,
+  });
   const classes = useStyles();
   const mobileLayout = useMediaQuery("(max-width:1250px)");
 
@@ -41,6 +47,7 @@ const Home = () => {
           : { height: "100vh" }
       }
     >
+      <SEO />
       <Box
         style={{ gridRow: mobileLayout ? "1" : "1 / 3", gridColumn: mobileLayout ? "1" : "1 / 4" }}
       >
@@ -123,6 +130,17 @@ const Home = () => {
       </Box>
     </Box>
   );
+};
+
+export const getStaticProps = async () => {
+  const initialData = await generateStats();
+
+  return {
+    props: {
+      initialData,
+    },
+    revalidate: 5,
+  };
 };
 
 export default Home;

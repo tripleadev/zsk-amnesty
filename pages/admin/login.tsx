@@ -2,10 +2,12 @@ import { Container, Box } from "@mui/material";
 import { GetServerSidePropsContext } from "next";
 import { LoginForm } from "../../components/admin/LoginForm";
 import { verifySession } from "../../lib/auth/auth";
+import { SEO } from "../../components/common/SEO";
 
 const Login = () => {
   return (
     <Container maxWidth="sm">
+      <SEO title="Login" />
       <Box height="100vh" sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
         <LoginForm />
       </Box>

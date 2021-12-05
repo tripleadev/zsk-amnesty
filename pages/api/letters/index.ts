@@ -1,4 +1,4 @@
-import { object, string, number, Asserts } from "yup";
+import { object, string, number, array } from "yup";
 import { withApiAuth } from "../../../lib/auth/withApiAuth";
 import { withApiMethods } from "../../../lib/withApiMethods";
 import { withApiValidation } from "../../../lib/withApiValidation";
@@ -9,6 +9,10 @@ const createLetterSchema = object({
   classId: string().required("Class ID is required"),
   registerNumber: number().default(undefined),
   destinationId: string().required("Destination ID is required"),
+});
+
+const deleteLetterSchema = object({
+  ids: array(string()).required("IDs are required"),
 });
 
 export default withApiAuth(
@@ -93,5 +97,22 @@ export default withApiAuth(
         }
       },
     ),
+    DELETE: withApiValidation({ body: deleteLetterSchema }, async (req, res) => {
+      const { ids } = req.body;
+
+      try {
+        await prisma.$transaction(
+          ids.map((adminId) =>
+            prisma.letter.delete({
+              where: { id: adminId },
+            }),
+          ),
+        );
+
+        return res.json({ message: "Letters have been deleted successfully" });
+      } catch {
+        return res.status(500).json({ message: "Internal server error" });
+      }
+    }),
   }),
 );

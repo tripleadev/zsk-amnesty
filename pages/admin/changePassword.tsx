@@ -7,6 +7,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useQuery, useQueryClient } from "react-query";
 import Axios from "axios";
 import Toast from "../../components/common/Toast";
+import { SEO } from "../../components/common/SEO";
 
 function ChangePassword({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const queryClient = useQueryClient();
@@ -40,6 +41,8 @@ function ChangePassword({ user }: InferGetServerSidePropsType<typeof getServerSi
 
   return (
     <Box m={5}>
+      <SEO title="Change Password" />
+
       <Link href="/admin/dashboard">
         <Button sx={{ mb: 3 }}>Dashboard</Button>
       </Link>

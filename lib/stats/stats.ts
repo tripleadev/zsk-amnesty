@@ -5,7 +5,7 @@ import { totalAuthors } from "./totalAuthors";
 import { totalDestinations } from "./totalDestinations";
 import { lettersOfClass } from "./lettersOfClass";
 import { lettersToDestination } from "./lettersToDestination";
-import { anonymousLettersTo } from "./anonymousLettersTo";
+import { anonymousLettersToDestination } from "./anonymousLettersToDestination";
 import { topAuthors } from "./topAuthors";
 
 export const generateStats = async () => {
@@ -31,13 +31,13 @@ export const generateStats = async () => {
     ...Object.fromEntries(
       destinations.map((destination) => [
         `lettersTo.${destination.name}`,
-        lettersToDestination(destination.letters),
+        lettersToDestination(destination.letters, anons),
       ]),
     ),
     ...Object.fromEntries(
       destinations.map((destination) => [
         `anonymous.lettersTo.${destination.name}`,
-        anonymousLettersTo(destination.letters, anons),
+        anonymousLettersToDestination(destination.letters, anons),
       ]),
     ),
     ...topAuthors(authors, 3),
