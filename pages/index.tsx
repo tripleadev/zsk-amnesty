@@ -29,7 +29,7 @@ const Home = () => {
 
   // Fix to make recharts charts responsive
   useReloadOnResize();
-  
+
   if (!data) return <div>loading...</div>;
 
   return (
