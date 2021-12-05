@@ -1,21 +1,13 @@
 import { withApiMethods } from "../../lib/withApiMethods";
-import { prisma } from "../../lib/db";
-import { statsAreExpired, generateStats, updateStats } from "../../lib/stats/stats";
+import { generateStats } from "../../lib/stats/stats";
 
 export default withApiMethods({
   GET: async (_req, res) => {
     try {
-      const stats = await prisma.stats.findFirst({});
+      const stats = await generateStats();
 
-      if (statsAreExpired(stats)) {
-        const newStats = await generateStats();
-
-        await updateStats(newStats);
-
-        return res.json(newStats);
-      } else {
-        return res.json(stats?.stats);
-      }
+      res.setHeader("Cache-Control", "public, s-maxage=10, stale-while-revalidate=59");
+      return res.json(stats);
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Internal server error" });

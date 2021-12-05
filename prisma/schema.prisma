@@ -48,9 +48,3 @@ model Session {
   user   Admin  @relation(fields: [userId], references: [id])
   userId String
 }
-
-model Stats {
-  id        String   @id @default(uuid())
-  updatedAt DateTime @updatedAt
-  stats     Json
-}

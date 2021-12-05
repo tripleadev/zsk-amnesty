@@ -7,7 +7,6 @@ import { lettersOfClass } from "./lettersOfClass";
 import { lettersToDestination } from "./lettersToDestination";
 import { anonymousLettersTo } from "./anonymousLettersTo";
 import { topAuthors } from "./topAuthors";
-import { Stats } from "@prisma/client";
 
 export const generateStats = async () => {
   const letters = await prisma.letter.findMany();
@@ -43,17 +42,4 @@ export const generateStats = async () => {
     ),
     ...topAuthors(authors, 3),
   } as Record<string, string | number>;
-};
-
-export const updateStats = (newStats: object) => {
-  return prisma.$transaction([
-    prisma.stats.deleteMany({ where: {} }),
-    prisma.stats.create({ data: { stats: JSON.stringify(newStats) } }),
-  ]);
-};
-
-const EXPIRE_STATS_AFTER = 1000 * 10;
-
-export const statsAreExpired = (stats: Stats | null) => {
-  return !stats || stats.updatedAt < new Date(Date.now() - EXPIRE_STATS_AFTER);
 };
