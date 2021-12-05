@@ -46,10 +46,10 @@ export const generateStats = async () => {
 };
 
 export const updateStats = (newStats: object) => {
-  return prisma.$transaction(async (prisma) => {
-    await prisma.stats.deleteMany({ where: {} });
-    await prisma.stats.create({ data: { stats: JSON.stringify(newStats) } });
-  });
+  return prisma.$transaction([
+    prisma.stats.deleteMany({ where: {} }),
+    prisma.stats.create({ data: { stats: JSON.stringify(newStats) } }),
+  ]);
 };
 
 const EXPIRE_STATS_AFTER = 1000 * 10;
