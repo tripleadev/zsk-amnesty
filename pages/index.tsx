@@ -9,6 +9,7 @@ import { Total } from "../components/stats/Total";
 import { Classes } from "../components/stats/Classes";
 import { Destinations } from "../components/stats/Destinations";
 import { Authors } from "../components/stats/Authors";
+import { useReloadOnResize } from "../lib/hooks/useReloadOnResize";
 
 const useStyles = makeStyles({
   grid: {
@@ -26,6 +27,9 @@ const Home = () => {
   const classes = useStyles();
   const mobileLayout = useMediaQuery("(max-width:1250px)");
 
+  // Fix to make recharts charts responsive
+  useReloadOnResize();
+  
   if (!data) return <div>loading...</div>;
 
   return (
