@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["dataProxy"]
+  previewFeatures = ["dataProxy", "interactiveTransactions"]
 }
 
 datasource db {
@@ -49,8 +49,8 @@ model Session {
   userId String
 }
 
-model Stat {
-  id        String   @id
-  value     String
+model Stats {
+  id        String   @id @default(uuid())
   updatedAt DateTime @updatedAt
+  stats     Json
 }

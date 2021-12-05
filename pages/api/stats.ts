@@ -4,16 +4,16 @@ import { statsAreExpired, generateStats, updateStats } from "../../lib/stats/sta
 
 export default withApiMethods({
   GET: async (_req, res) => {
-    const stats = await prisma.stat.findMany();
+    const stats = await prisma.stats.findFirst();
 
     if (statsAreExpired(stats)) {
       const newStats = await generateStats();
 
-      res.json(newStats);
+      await updateStats(newStats);
 
-      updateStats(newStats);
+      return res.json(newStats);
     } else {
-      res.json(Object.fromEntries(stats.map((stat) => [stat.id, stat.value])));
+      return res.json(stats?.stats);
     }
   },
 });

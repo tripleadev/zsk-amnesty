@@ -74,7 +74,7 @@ export const Destinations = ({
               <YAxis />
               <Tooltip />
               <Legend verticalAlign="top" height={36} formatter={renderColorfulLegendText} />
-              <Bar dataKey="authored" stackId="a" fill="#FFFF00" />
+              <Bar dataKey="authored" stackId="a" fill="#FF8042" />
               <Bar dataKey="anonymous" stackId="a" fill="#FFBB28" />
             </BarChart>
           </ResponsiveContainer>

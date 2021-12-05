@@ -7,7 +7,7 @@ import { lettersOfClass } from "./lettersOfClass";
 import { lettersToDestination } from "./lettersToDestination";
 import { anonymousLettersTo } from "./anonymousLettersTo";
 import { topAuthors } from "./topAuthors";
-import { Stat } from "@prisma/client";
+import { Stats } from "@prisma/client";
 
 export const generateStats = async () => {
   const letters = await prisma.letter.findMany();
@@ -42,30 +42,18 @@ export const generateStats = async () => {
       ]),
     ),
     ...topAuthors(authors, 3),
-  };
+  } as Record<string, string | number>;
 };
 
 export const updateStats = (newStats: object) => {
-  const upserts = Object.entries(newStats).map(([key, value]) =>
-    prisma.stat.upsert({
-      where: {
-        id: key,
-      },
-      update: {
-        value: String(value),
-        updatedAt: new Date(Date.now()),
-      },
-      create: {
-        id: key,
-        value: String(value),
-        updatedAt: new Date(Date.now()),
-      },
-    }),
-  );
-
-  return prisma.$transaction(upserts);
+  return prisma.$transaction(async (prisma) => {
+    await prisma.stats.deleteMany({ where: {} });
+    await prisma.stats.create({ data: { stats: JSON.stringify(newStats) } });
+  });
 };
 
-export const statsAreExpired = (stats: Stat[]) => {
-  return !stats.length || stats[0]?.updatedAt < new Date(Date.now() - 1000 * 10);
+const EXPIRE_STATS_AFTER = 1000 * 10;
+
+export const statsAreExpired = (stats: Stats | null) => {
+  return !stats || stats.updatedAt < new Date(Date.now() - EXPIRE_STATS_AFTER);
 };
