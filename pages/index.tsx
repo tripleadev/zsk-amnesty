@@ -10,6 +10,8 @@ import { Classes } from "../components/stats/Classes";
 import { Destinations } from "../components/stats/Destinations";
 import { Authors } from "../components/stats/Authors";
 import { useReloadOnResize } from "../lib/hooks/useReloadOnResize";
+import { InferGetStaticPropsType } from "next";
+import { generateStats } from "../lib/stats/stats";
 
 const useStyles = makeStyles({
   grid: {
@@ -22,8 +24,11 @@ const useStyles = makeStyles({
   },
 });
 
-const Home = () => {
-  const { data } = useQuery("/api/stats", fetcher("/api/stats"), { refetchInterval: 5000 });
+const Home = ({ initialData }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { data } = useQuery("/api/stats", fetcher("/api/stats"), {
+    refetchInterval: 5000,
+    initialData,
+  });
   const classes = useStyles();
   const mobileLayout = useMediaQuery("(max-width:1250px)");
 
@@ -123,6 +128,17 @@ const Home = () => {
       </Box>
     </Box>
   );
+};
+
+export const getStaticProps = async () => {
+  const initialData = await generateStats();
+
+  return {
+    props: {
+      initialData,
+    },
+    revalidate: 5,
+  };
 };
 
 export default Home;
