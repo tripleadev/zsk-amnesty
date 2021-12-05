@@ -36,7 +36,6 @@
     "react-hook-form": "7.20.3",
     "recharts": "2.1.6",
     "react-query": "3.34.0",
-    "recharts": "2.1.6",
     "yup": "0.32.11"
   },
   "devDependencies": {

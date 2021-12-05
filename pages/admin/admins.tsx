@@ -3,12 +3,13 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { withServerSideAuth } from "../../lib/auth/withServerSideAuth";
 import { AdminSchemaType } from "../api/admins";
-import { DataGrid, GridColDef, GridSelectionModel } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridSelectionModel, GridToolbarContainer } from "@mui/x-data-grid";
 import { Box, Button, FormHelperText, Input } from "@mui/material";
 import Link from "next/link";
 import Toast from "../../components/common/Toast";
 import { useQuery, useQueryClient } from "react-query";
 import { fetcher } from "../../lib/fetcher";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const columnsObject: GridColDef[] = [{ field: "email", headerName: "Email Adress", width: 300 }];
 
@@ -37,16 +38,18 @@ const AdminsManagmentPage = () => {
       });
   };
 
-  const handleDelete = (adminsToDelete: GridSelectionModel) => {
-    Axios.delete("/api/admins", { data: { ids: adminsToDelete } })
-      .then((res) => {
-        setMessage(res.data.message);
+  const handleDelete = () => {
+    if (adminsToDelete.length) {
+      Axios.delete("/api/admins", { data: { ids: adminsToDelete } })
+        .then((res) => {
+          setMessage(res.data.message);
 
-        queryClient.invalidateQueries("/api/admins");
-      })
-      .catch((err) => {
-        setError(err.response?.data?.message || "Something went wrong");
-      });
+          queryClient.invalidateQueries("/api/admins");
+        })
+        .catch((err) => {
+          setError(err.response?.data?.message || "Something went wrong");
+        });
+    }
   };
 
   return (
@@ -83,17 +86,23 @@ const AdminsManagmentPage = () => {
           columns={columnsObject}
           autoPageSize
           checkboxSelection
-          onSelectionModelChange={(selected) => setAdminsToDelete(selected)}
+          onSelectionModelChange={setAdminsToDelete}
+          components={{
+            Toolbar: () => (
+              <GridToolbarContainer>
+                <Button
+                  onClick={handleDelete}
+                  color="warning"
+                  startIcon={<DeleteIcon />}
+                  disabled={!adminsToDelete.length}
+                >
+                  Delete selected
+                </Button>
+              </GridToolbarContainer>
+            ),
+          }}
         />
       </div>
-      <Button
-        sx={{ mt: 3 }}
-        variant="contained"
-        color="error"
-        onClick={() => handleDelete(adminsToDelete)}
-      >
-        Delete selected admins
-      </Button>
 
       <Toast value={error} severity="error" />
       <Toast value={message} severity="success" />
