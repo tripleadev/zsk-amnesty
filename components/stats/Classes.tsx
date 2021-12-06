@@ -32,7 +32,7 @@ export const Classes = ({ classes }: { classes: { name: string; value: number }[
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-    if (percent * 100 > 10) {
+    if (percent * 100 > 7) {
       return (
         <text
           x={x}
