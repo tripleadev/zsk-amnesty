@@ -70,7 +70,7 @@ export const Destinations = ({
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" textAnchor="end" interval={0} angle={-15} fontSize="12" />
+              <XAxis dataKey="name" textAnchor="end" interval={0} angle={-10} fontSize="12" />
               <YAxis />
               <Tooltip />
               <Legend verticalAlign="top" height={36} formatter={renderColorfulLegendText} />
