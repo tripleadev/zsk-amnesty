@@ -92,7 +92,9 @@ export const Authors = ({ authors }: { authors: { name: string; value: number }[
           <Box>
             {authors.map((author, index) => (
               <Box key={index}>
-                <h3 className={classes.barTitle}>{author.name}</h3>
+                <h3 className={classes.barTitle}>
+                  {author.name} - {author.value} letters
+                </h3>
                 <LinearProgress
                   variant="determinate"
                   value={
