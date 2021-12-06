@@ -32,25 +32,27 @@ export const Classes = ({ classes }: { classes: { name: string; value: number }[
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-    return (
-      <text
-        x={x}
-        y={y}
-        fill="#000000"
-        textAnchor={x > cx ? "start" : "end"}
-        dominantBaseline="central"
-        fontSize={20}
-        fontFamily="Amnesty Trade Gothic Roman"
-        fontWeight="bold"
-      >
-        <tspan x={x} y={y}>
-          {classes[index].name}
-        </tspan>
-        <tspan x={x} y={y + 20}>
-          {value}
-        </tspan>
-      </text>
-    );
+    if (percent * 100 > 10) {
+      return (
+        <text
+          x={x}
+          y={y}
+          fill="#000000"
+          textAnchor={x > cx ? "start" : "end"}
+          dominantBaseline="central"
+          fontSize={20}
+          fontFamily="Amnesty Trade Gothic Roman"
+          fontWeight="bold"
+        >
+          <tspan x={x} y={y}>
+            {classes[index].name}
+          </tspan>
+          <tspan x={x} y={y + 20}>
+            {value}
+          </tspan>
+        </text>
+      );
+    } else return null;
   };
 
   return (
