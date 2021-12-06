@@ -33,6 +33,7 @@ export const Authors = ({ authors }: { authors: { name: string; value: number }[
     outerRadius,
     percent,
     index,
+    value,
   }: {
     cx: number;
     cy: number;
@@ -41,6 +42,7 @@ export const Authors = ({ authors }: { authors: { name: string; value: number }[
     outerRadius: number;
     percent: number;
     index: number;
+    value: number;
   }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -60,7 +62,9 @@ export const Authors = ({ authors }: { authors: { name: string; value: number }[
         <tspan x={x - 12} y={y}>
           {authors[index].name}
         </tspan>
-        <tspan x={x - 12} y={y + 16}>{`${(percent * 100).toFixed(0)}%`}</tspan>
+        <tspan x={x - 12} y={y + 16}>
+          {value}
+        </tspan>
       </text>
     );
   };

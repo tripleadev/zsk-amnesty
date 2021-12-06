@@ -17,6 +17,7 @@ export const Classes = ({ classes }: { classes: { name: string; value: number }[
     outerRadius,
     percent,
     index,
+    value,
   }: {
     cx: number;
     cy: number;
@@ -25,6 +26,7 @@ export const Classes = ({ classes }: { classes: { name: string; value: number }[
     outerRadius: number;
     percent: number;
     index: number;
+    value: number;
   }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -44,7 +46,9 @@ export const Classes = ({ classes }: { classes: { name: string; value: number }[
         <tspan x={x} y={y}>
           {classes[index].name}
         </tspan>
-        <tspan x={x} y={y + 20}>{`${(percent * 100).toFixed(0)}%`}</tspan>
+        <tspan x={x} y={y + 20}>
+          {value}
+        </tspan>
       </text>
     );
   };
