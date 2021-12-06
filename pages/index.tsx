@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     padding: "1rem",
     display: "grid",
     gridTemplateColumns: "repeat(12, 1fr)",
-    gridTemplateRows: "1fr 1fr 2fr",
+    gridTemplateRows: "1fr 1fr auto",
     gridGap: "1rem",
     backgroundColor: "#eeeeee",
   },
@@ -44,7 +44,7 @@ const Home = ({ initialData }: InferGetStaticPropsType<typeof getStaticProps>) =
       style={
         mobileLayout
           ? { gridTemplateColumns: "auto", gridTemplateRows: "repeat(5, auto)", minHeight: "100vh" }
-          : { height: "100vh" }
+          : { minHeight: "100vh" }
       }
     >
       <SEO />

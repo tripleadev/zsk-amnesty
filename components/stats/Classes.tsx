@@ -89,9 +89,11 @@ export const Classes = ({ classes }: { classes: { name: string; value: number }[
               cy="50%"
               outerRadius={width / 2}
             >
-              {classes.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
+              {classes
+                .sort((a, b) => b.value - a.value)
+                .map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
             </Pie>
             <Tooltip />
           </PieChart>
