@@ -34,7 +34,7 @@ export const Total = ({
 }) => {
   const classes = useStyles();
   const mobileLayout = useMediaQuery("(max-width:1250px)");
-  const smallText = useMediaQuery("(max-width: 1450px)");
+  const smallText = useMediaQuery("(max-width: 1610px)");
   const numSize = smallText ? 28 : 36;
   const labelSize = smallText ? 18 : 24;
 
