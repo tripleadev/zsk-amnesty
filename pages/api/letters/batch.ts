@@ -12,23 +12,24 @@ export default withApiAuth(
           destinationId: string().required("Destination ID is required"),
           classId: string().required("Class ID is required"),
           amount: number().required("Amount is required").min(1),
+          registerNumber: number().default(null).nullable(),
         }),
       },
       async (req, res) => {
-        const { destinationId, classId, amount } = req.body;
+        const { destinationId, classId, amount, registerNumber } = req.body;
 
         try {
           let author = await prisma.author.findFirst({
             where: {
               classId,
-              registerNumber: undefined,
+              registerNumber: registerNumber,
             },
           });
           if (!author) {
             author = await prisma.author.create({
               data: {
                 classId,
-                registerNumber: undefined,
+                registerNumber: registerNumber,
               },
             });
           }

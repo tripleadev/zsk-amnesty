@@ -59,7 +59,7 @@ export const LettersForm = () => {
     Axios.post(batchMode ? "/api/letters/batch" : "/api/letters", {
       destinationId,
       classId,
-      registerNumber: registerNumber || undefined,
+      registerNumber: registerNumber || null,
       amount,
     })
       .then((res) => {
@@ -116,18 +116,19 @@ export const LettersForm = () => {
             rules={{ required: true }}
           />
         </FormControl>
+
+        <FormControl sx={{ width: 300 }}>
+          <TextField
+            {...register("registerNumber")}
+            placeholder="24"
+            label="Register Number"
+            error={!!errors.registerNumber}
+            type="number"
+          />
+        </FormControl>
+
         <FormControlLabel control={<Switch {...register("batchMode")} />} label="Batch mode" />
-        {!isBatchMode && (
-          <FormControl sx={{ width: 300 }}>
-            <TextField
-              {...register("registerNumber", { min: 1 })}
-              placeholder="24"
-              label="Register Number"
-              error={!!errors.registerNumber}
-              type="number"
-            />
-          </FormControl>
-        )}
+
         {isBatchMode && (
           <FormControl sx={{ width: 300 }}>
             <TextField

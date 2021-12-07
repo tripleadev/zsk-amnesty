@@ -7,7 +7,7 @@ import { DEFAULT_LETTERS_TAKE } from "../../../components/letters/LettersTable";
 
 const createLetterSchema = object({
   classId: string().required("Class ID is required"),
-  registerNumber: number().default(undefined),
+  registerNumber: number().default(null).nullable(),
   destinationId: string().required("Destination ID is required"),
 });
 
