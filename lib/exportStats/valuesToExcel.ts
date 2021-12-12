@@ -1,9 +1,8 @@
 import { Author, Destination, Letter } from "@prisma/client";
-import { Workbook, Worksheet } from "excel4node";
 
 interface Props {
-  workbook: Workbook;
-  worksheet: Worksheet;
+  workbook: any;
+  worksheet: any;
   data: {
     allLetters: Letter[];
     allAuthors: Author[];
