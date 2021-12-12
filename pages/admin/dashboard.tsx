@@ -5,18 +5,18 @@ import { Button, Box, Typography, useTheme } from "@mui/material";
 import { SEO } from "../../components/common/SEO";
 import { fetcher } from "../../lib/fetcher";
 import axios from "axios";
-const fileDownload = require('js-file-download');
+const fileDownload = require("js-file-download");
 
 const AdminPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const theme = useTheme();
   const downloadStats = () => {
     axios({
-        url: "/api/exportStats",
-        method: 'GET',
-        responseType: 'blob',
+      url: "/api/exportStats",
+      method: "GET",
+      responseType: "blob",
     })
-      .then(response => fileDownload(response.data, `zsk-amnesty.xlsx`))
-      .catch(err => console.log(err));
+      .then((response) => fileDownload(response.data, `zsk-amnesty.xlsx`))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -52,7 +52,7 @@ const AdminPage = ({ user }: InferGetServerSidePropsType<typeof getServerSidePro
             Change password
           </Button>
         </Link>
-        <Button variant="outlined" onClick={ downloadStats } sx={{ marginInline: theme.spacing(1) }}>
+        <Button variant="outlined" onClick={downloadStats} sx={{ marginInline: theme.spacing(1) }}>
           Download stats
         </Button>
         {/* Here we'll be adding links to the other pages */}
