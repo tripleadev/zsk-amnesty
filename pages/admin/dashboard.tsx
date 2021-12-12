@@ -3,12 +3,14 @@ import { withServerSideAuth } from "../../lib/auth/withServerSideAuth";
 import Link from "next/link";
 import { Button, Box, Typography, useTheme } from "@mui/material";
 import { SEO } from "../../components/common/SEO";
-import { fetcher } from "../../lib/fetcher";
 import axios from "axios";
-const fileDownload = require("js-file-download");
+import { useState } from "react";
+import Toast from "../../components/common/Toast";
+import fileDownload from "js-file-download";
 
 const AdminPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const theme = useTheme();
+  const [error, setError] = useState("");
   const downloadStats = () => {
     axios({
       url: "/api/exportStats",
@@ -16,7 +18,7 @@ const AdminPage = ({ user }: InferGetServerSidePropsType<typeof getServerSidePro
       responseType: "blob",
     })
       .then((response) => fileDownload(response.data, `zsk-amnesty.xlsx`))
-      .catch((err) => console.log(err));
+      .catch((err) => setError(err));
   };
 
   return (
@@ -60,6 +62,8 @@ const AdminPage = ({ user }: InferGetServerSidePropsType<typeof getServerSidePro
       <Link href="/admin/logout" prefetch={false} passHref>
         <Button>Log out</Button>
       </Link>
+
+      <Toast value={error} severity="error" />
     </Box>
   );
 };
