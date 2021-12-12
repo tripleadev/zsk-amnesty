@@ -39,6 +39,4 @@ export const valuesToExcel = async ({ workbook, worksheet, data }: Props) => {
       .string(destination?.name)
       .style(normalStyle);
   });
-
-  return workbook;
 };
