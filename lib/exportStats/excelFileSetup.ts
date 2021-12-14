@@ -1,6 +1,6 @@
 import excel from "excel4node";
 
-export const excelSetup = async () => {
+export const excelFileSetup = async () => {
   const workbook = new excel.Workbook();
   const worksheet = workbook.addWorksheet("Letters");
 

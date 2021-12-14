@@ -1,6 +1,6 @@
 import { Author, Destination, Letter } from "@prisma/client";
 
-interface Props {
+type Props = {
   workbook: any;
   worksheet: any;
   data: {
@@ -8,9 +8,9 @@ interface Props {
     allAuthors: Author[];
     allDestinations: Destination[];
   };
-}
+};
 
-export const valuesToExcel = async ({ workbook, worksheet, data }: Props) => {
+export const addValuesToWorksheet = async ({ workbook, worksheet, data }: Props) => {
   const { allLetters, allAuthors, allDestinations } = data;
   const normalStyle = workbook.createStyle({
     font: {
