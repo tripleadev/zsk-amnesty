@@ -40,6 +40,7 @@ const AdminPage = ({ user }: InferGetServerSidePropsType<typeof getServerSidePro
             Change password
           </Button>
         </Link>
+        {/* eslint-disable-next-line */}
         <a href="/api/exportStats" style={{ textDecoration: "none" }}>
           <Button variant="outlined" sx={{ marginInline: theme.spacing(1) }}>
             Download stats
