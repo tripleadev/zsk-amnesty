@@ -54,10 +54,10 @@ export const addValuesToWorksheet = async ({ workbook, worksheet, data }: Props)
         .string(k)
         .style(normalStyle);
 
-    verifyNumber(v) &&
+    verifyString(v.toString()) &&
       worksheet
         .cell(i + 2, 6)
-        .number(v)
+        .string(v.toString())
         .style(normalStyle);
   });
 };
