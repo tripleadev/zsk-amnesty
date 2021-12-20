@@ -8,8 +8,11 @@ export const topAuthors = (authors: AuthorWithLetters[], places: number) => {
       .filter((author) => !!author.registerNumber)
       .sort((a, b) => b.letters.length - a.letters.length)
       .slice(0, places)
-      .map((author) => {
-        return [`top.1.${author.classId}.${author.registerNumber}`, String(author.letters.length)];
+      .map((author, i) => {
+        return [
+          `top.${i + 1}.${author.classId}.${author.registerNumber}`,
+          String(author.letters.length),
+        ];
       }),
   );
 };

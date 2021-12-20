@@ -1,4 +1,5 @@
 import { Author, Destination, Letter } from "@prisma/client";
+import { generateStats } from "../stats/stats";
 
 type Props = {
   workbook: any;
@@ -9,6 +10,9 @@ type Props = {
     allDestinations: Destination[];
   };
 };
+
+const verifyString = (value: unknown): value is string => typeof value === "string";
+const verifyNumber = (value: unknown): value is number => typeof value === "number";
 
 export const addValuesToWorksheet = async ({ workbook, worksheet, data }: Props) => {
   const { allLetters, allAuthors, allDestinations } = data;
@@ -25,17 +29,35 @@ export const addValuesToWorksheet = async ({ workbook, worksheet, data }: Props)
       (destination) => destination.id === letter.destinationId,
     );
 
-    worksheet
-      .cell(index + 2, 1)
-      .string(author?.classId)
-      .style(normalStyle);
-    worksheet
-      .cell(index + 2, 2)
-      .number(author?.registerNumber)
-      .style(normalStyle);
-    worksheet
-      .cell(index + 2, 3)
-      .string(destination?.name)
-      .style(normalStyle);
+    verifyString(author?.classId) &&
+      worksheet
+        .cell(index + 2, 1)
+        .string(author?.classId)
+        .style(normalStyle);
+    verifyNumber(author?.registerNumber) &&
+      worksheet
+        .cell(index + 2, 2)
+        .number(author?.registerNumber)
+        .style(normalStyle);
+    verifyString(destination?.name) &&
+      worksheet
+        .cell(index + 2, 3)
+        .string(destination?.name)
+        .style(normalStyle);
+  });
+
+  const allStats = await generateStats();
+  Object.entries(allStats).forEach(([k, v], i) => {
+    verifyString(k) &&
+      worksheet
+        .cell(i + 2, 5)
+        .string(k)
+        .style(normalStyle);
+
+    verifyNumber(v) &&
+      worksheet
+        .cell(i + 2, 6)
+        .number(v)
+        .style(normalStyle);
   });
 };
