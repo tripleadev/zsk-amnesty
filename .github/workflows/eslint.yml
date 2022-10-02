@@ -36,7 +36,7 @@ jobs:
           node-version: 16.14.2
         
       - name: Install packages
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile && yarn add @microsoft/eslint-formatter-sarif
 
       - name: Run ESLint
         run: yarn eslint .
