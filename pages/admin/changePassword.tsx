@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { InferGetServerSidePropsType } from "next";
-import { Box, Link, Button, Input, FormHelperText } from "@mui/material";
+import { Box, Link, Button, Input, FormHelperText, Grid } from "@mui/material";
 import { withServerSideAuth } from "../../lib/auth/withServerSideAuth";
 import { ChangePasswordType } from "../api/changePassword";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -48,20 +48,33 @@ function ChangePassword({ user }: InferGetServerSidePropsType<typeof getServerSi
       </Link>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        {errors.name && <FormHelperText error>All fields are required</FormHelperText>}
-        <Input
-          {...register("oldPassword", { required: true })}
-          placeholder="Old Password"
-          type="password"
-        />
-        <Input
-          {...register("newPassword", { required: true })}
-          placeholder="New Password"
-          type="password"
-        />
-        <Button type="submit" variant="contained" style={{ marginLeft: "10px" }}>
-          Submit
-        </Button>
+        <Grid container gap={1}>
+          {errors.name && <FormHelperText error>All fields are required</FormHelperText>}
+
+          <Grid item xs={12} md={4} lg={2}>
+            <Input
+              style={{ width: "100%", maxWidth: "300px" }}
+              {...register("oldPassword", { required: true })}
+              placeholder="Old Password"
+              type="password"
+            />
+          </Grid>
+
+          <Grid item xs={12} md={4} lg={2}>
+            <Input
+              style={{ width: "100%", maxWidth: "300px" }}
+              {...register("newPassword", { required: true })}
+              placeholder="New Password"
+              type="password"
+            />
+          </Grid>
+
+          <Grid item xs={12} md>
+            <Button type="submit" variant="contained" style={{ width: "100%", maxWidth: "250px" }}>
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
       </form>
 
       <Toast value={error} severity="error" />

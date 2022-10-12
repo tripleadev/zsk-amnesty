@@ -10,6 +10,7 @@ import {
   TableRow,
   TableBody,
   TableCell,
+  Grid,
 } from "@mui/material";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -50,11 +51,21 @@ const DestinationsManagementPage = () => {
         <Button sx={{ mb: 3 }}>Dashboard</Button>
       </Link>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {errors.name && <FormHelperText error>This field is required</FormHelperText>}
-        <Input {...register("name", { required: true })} placeholder="destination name" />
-        <Button type="submit" variant="contained" style={{ marginLeft: "10px" }}>
-          Submit
-        </Button>
+        <Grid container spacing={1}>
+          {errors.name && <FormHelperText error>This field is required</FormHelperText>}
+          <Grid item xs={8} md={10} lg={3}>
+            <Input
+              style={{ width: "100%" }}
+              {...register("name", { required: true })}
+              placeholder="destination name"
+            />
+          </Grid>
+          <Grid item xs lg={1} justifySelf={"start"}>
+            <Button type="submit" variant="contained" style={{ marginLeft: "10px", width: "100%" }}>
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
       </form>
 
       <Box mt={3}>

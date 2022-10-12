@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { withServerSideAuth } from "../../lib/auth/withServerSideAuth";
 import { AdminSchemaType } from "../api/admins";
 import { DataGrid, GridColDef, GridSelectionModel, GridToolbarContainer } from "@mui/x-data-grid";
-import { Box, Button, FormHelperText, Input } from "@mui/material";
+import { Box, Button, FormHelperText, Input, Grid } from "@mui/material";
 import Link from "next/link";
 import Toast from "../../components/common/Toast";
 import { useQuery, useQueryClient } from "react-query";
@@ -61,25 +61,33 @@ const AdminsManagmentPage = () => {
       </Link>
       <Box mb={5}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Input
-            sx={{ mr: [0, 3], mb: [2, 0] }}
-            type="email"
-            placeholder="Email"
-            {...register("email", { required: true })}
-          />
-          {errors.email && <FormHelperText error>This field is required</FormHelperText>}
+          <Grid container spacing={1}>
+            <Grid item xs={12} md={4} lg={2}>
+              <Input
+                sx={{ mr: [0, 3], mb: [2, 0], width: "100%", maxWidth: "400px" }}
+                type="email"
+                placeholder="Email"
+                {...register("email", { required: true })}
+              />
+              {errors.email && <FormHelperText error>This field is required</FormHelperText>}
+            </Grid>
 
-          <Input
-            sx={{ mr: [0, 3], mb: [2, 0] }}
-            type="password"
-            placeholder="Password"
-            {...register("password", { required: true })}
-          />
-          {errors.password && <FormHelperText error>This field is required</FormHelperText>}
+            <Grid item xs={12} md={4} lg={2}>
+              <Input
+                sx={{ mr: [0, 3], mb: [2, 0], width: "100%", maxWidth: "400px" }}
+                type="password"
+                placeholder="Password"
+                {...register("password", { required: true })}
+              />
+              {errors.password && <FormHelperText error>This field is required</FormHelperText>}
+            </Grid>
 
-          <Button variant="contained" type="submit">
-            Add new admin
-          </Button>
+            <Grid item md={4} lg={2}>
+              <Button variant="contained" type="submit">
+                Add new admin
+              </Button>
+            </Grid>
+          </Grid>
         </form>
       </Box>
       <div style={{ height: "50vh", width: "100%" }}>
