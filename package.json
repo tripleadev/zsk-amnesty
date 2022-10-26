@@ -64,7 +64,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "engines": {
-    "node": "16.16.0",
-    "yarn": "1.22.17"
+    "node": "16.x",
+    "yarn": "1.x"
   }
 }
