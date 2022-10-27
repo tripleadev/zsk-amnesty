@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 
 const Home = ({ initialData }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { data } = useQuery("/api/stats", fetcher("/api/stats"), {
-    refetchInterval: 5000,
+    refetchInterval: 30000,
     initialData,
   });
   const classes = useStyles();
@@ -139,7 +139,7 @@ export const getStaticProps = async () => {
     props: {
       initialData,
     },
-    revalidate: 5,
+    revalidate: 30,
   };
 };
 

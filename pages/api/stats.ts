@@ -6,7 +6,7 @@ export default withApiMethods({
     try {
       const stats = await generateStats();
 
-      res.setHeader("Cache-Control", "public, s-maxage=10, stale-while-revalidate=59");
+      res.setHeader("Cache-Control", "public, s-maxage=30, stale-while-revalidate=120");
       return res.json(stats);
     } catch (err) {
       console.error(err);
