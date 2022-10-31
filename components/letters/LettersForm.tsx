@@ -11,7 +11,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { Autocomplete } from "@mui/lab";
-import { Box } from "@mui/system";
+import { Box, Grid } from "@mui/material";
 import { useState } from "react";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import Axios from "axios";
@@ -78,69 +78,77 @@ export const LettersForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box sx={{ display: "flex", flexWrap: "wrap", alignItems: "center" }}>
-        <FormControl
-          sx={{ width: 300, marginRight: theme.spacing(1) }}
-          error={!!errors.destinationId}
-        >
-          <InputLabel id="destinationLabel">Destination</InputLabel>
-          <Select
-            {...register("destinationId", { required: true })}
-            label="Destination"
-            labelId="destinationLabel"
-          >
-            {destinations?.allDestinations.map((destination) => (
-              <MenuItem value={destination.id} key={destination.id}>
-                {destination.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl sx={{ width: 300, marginRight: theme.spacing(1) }}>
-          <Controller
-            render={(props) => (
-              <Autocomplete
-                placeholder="3C"
-                options={classOptions}
-                freeSolo
-                renderInput={(params) => (
-                  <TextField {...params} label="Class" error={!!errors.classId} />
-                )}
-                {...props}
-                onChange={(_e, data) => props.field.onChange(data)}
-                onInputChange={(_e, data) => props.field.onChange(data)}
-              />
-            )}
-            name="classId"
-            control={control}
-            rules={{ required: true }}
-          />
-        </FormControl>
+      <Grid container spacing={2} justifyContent="center">
+        <Grid item xs={12} md={4}>
+          <FormControl error={!!errors.destinationId} sx={{ width: "100%" }}>
+            <InputLabel id="destinationLabel">Destination</InputLabel>
+            <Select
+              {...register("destinationId", { required: true })}
+              label="Destination"
+              labelId="destinationLabel"
+            >
+              {destinations?.allDestinations.map((destination) => (
+                <MenuItem value={destination.id} key={destination.id}>
+                  {destination.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
 
-        <FormControl sx={{ width: 300 }}>
-          <TextField
-            {...register("registerNumber")}
-            placeholder="24"
-            label="Register Number"
-            error={!!errors.registerNumber}
-            type="number"
-          />
-        </FormControl>
+        <Grid item xs={12} md={4}>
+          <FormControl sx={{ width: "100%" }}>
+            <Controller
+              render={(props) => (
+                <Autocomplete
+                  placeholder="3C"
+                  options={classOptions}
+                  freeSolo
+                  renderInput={(params) => (
+                    <TextField {...params} label="Class" error={!!errors.classId} />
+                  )}
+                  {...props}
+                  onChange={(_e, data) => props.field.onChange(data)}
+                  onInputChange={(_e, data) => props.field.onChange(data)}
+                />
+              )}
+              name="classId"
+              control={control}
+              rules={{ required: true }}
+            />
+          </FormControl>
+        </Grid>
 
-        <FormControlLabel control={<Switch {...register("batchMode")} />} label="Batch mode" />
-
-        {isBatchMode && (
-          <FormControl sx={{ width: 300 }}>
+        <Grid item xs={12} md={4}>
+          <FormControl sx={{ width: "100%" }}>
             <TextField
-              {...register("amount")}
-              placeholder="10"
-              label="Amount of letters from class"
-              error={!!errors.amount}
+              {...register("registerNumber")}
+              placeholder="24"
+              label="Register Number"
+              error={!!errors.registerNumber}
               type="number"
             />
           </FormControl>
+        </Grid>
+
+        <Grid item xs={12}>
+          <FormControlLabel control={<Switch {...register("batchMode")} />} label="Batch mode" />
+        </Grid>
+
+        {isBatchMode && (
+          <Grid item xs={12}>
+            <FormControl sx={{ width: "100%" }}>
+              <TextField
+                {...register("amount")}
+                placeholder="10"
+                label="Amount of letters from class"
+                error={!!errors.amount}
+                type="number"
+              />
+            </FormControl>
+          </Grid>
         )}
-      </Box>
+      </Grid>
       <Button type="submit" variant="contained" sx={{ marginTop: theme.spacing(1) }}>
         Submit
       </Button>
