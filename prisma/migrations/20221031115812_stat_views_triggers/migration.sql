@@ -11,19 +11,22 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE TRIGGER refresh_stats_views_letter_trigger
+DROP TRIGGER IF EXISTS refresh_stats_views_letter_trigger ON public."Letter";
+CREATE TRIGGER refresh_stats_views_letter_trigger
   AFTER INSERT OR UPDATE
   ON public."Letter"
   FOR EACH STATEMENT
   EXECUTE PROCEDURE refresh_stats_views();
 
-CREATE OR REPLACE TRIGGER refresh_stats_views_author_trigger
+DROP TRIGGER IF EXISTS refresh_stats_views_author_trigger ON public."Author";
+CREATE TRIGGER refresh_stats_views_author_trigger
   AFTER INSERT OR UPDATE
   ON public."Author"
   FOR EACH STATEMENT
   EXECUTE PROCEDURE refresh_stats_views();
 
-CREATE OR REPLACE TRIGGER refresh_stats_views_destination_trigger
+DROP TRIGGER IF EXISTS refresh_stats_views_destination_trigger ON public."Destination";
+CREATE TRIGGER refresh_stats_views_destination_trigger
   AFTER INSERT OR UPDATE
   ON public."Destination"
   FOR EACH STATEMENT
