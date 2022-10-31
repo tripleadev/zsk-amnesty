@@ -16,7 +16,9 @@ const columnsObject: GridColDef[] = [{ field: "email", headerName: "Email Adress
 
 const AdminsManagmentPage = () => {
   const queryClient = useQueryClient();
-  const { data } = useQuery("/api/admins", fetcher("/api/admins"));
+
+  // TODO: Add typings
+  const { data } = useQuery("/api/admins", fetcher<any>("/api/admins"));
   const [adminsToDelete, setAdminsToDelete] = useState<GridSelectionModel>([]);
 
   const {

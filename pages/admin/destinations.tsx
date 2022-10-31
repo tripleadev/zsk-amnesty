@@ -22,7 +22,8 @@ import type { DestinationType } from "../api/destinations";
 import { SEO } from "../../components/common/SEO";
 
 const DestinationsManagementPage = () => {
-  const { data } = useQuery("/api/destinations", fetcher("/api/destinations"));
+  // TODO: Add typings
+  const { data } = useQuery("/api/destinations", fetcher<any>("/api/destinations"));
   const queryClient = useQueryClient();
   const {
     register,
