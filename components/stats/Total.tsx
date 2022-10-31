@@ -28,9 +28,9 @@ export const Total = ({
   totalDestinations,
   totalAuthors,
 }: {
-  totalLetters: string;
-  totalDestinations: string;
-  totalAuthors: string;
+  totalLetters: number;
+  totalDestinations: number;
+  totalAuthors: number;
 }) => {
   const classes = useStyles();
   const mobileLayout = useMediaQuery("(max-width:1250px)");
