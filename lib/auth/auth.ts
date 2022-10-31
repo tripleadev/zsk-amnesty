@@ -33,7 +33,7 @@ export const shouldRefreshSession = (refreshedAt: Date) => {
 };
 
 export const getSessionCookie = (sessionId: string, expireAt: Date) =>
-  `authorization=${sessionId}; Expires=${expireAt.toUTCString()}; Secure; HttpOnly; Path=/`;
+  `authorization=${sessionId}; Expires=${expireAt.toUTCString()}; HttpOnly; Path=/`;
 
 export const getDeleteSessionCookie = () =>
   `authorization=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
