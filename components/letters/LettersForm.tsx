@@ -31,11 +31,13 @@ export const LettersForm = () => {
   const theme = useTheme();
   const { data: destinations } = useQuery<{ allDestinations: Destination[] }>(
     "/api/destinations",
-    fetcher("/api/destinations"),
+    // TODO: Add typings
+    fetcher<any>("/api/destinations"),
   );
   const { data: classes } = useQuery<{ classes: string[] }>(
     "/api/classes",
-    fetcher("/api/classes"),
+    // TODO: Add typings
+    fetcher<any>("/api/classes"),
   );
   const queryClient = useQueryClient();
 

@@ -1,5 +1,5 @@
 import { Author, Destination, Letter } from "@prisma/client";
-import { generateStats } from "../stats/stats";
+import { getStats } from "../stats/stats";
 
 type Props = {
   workbook: any;
@@ -14,6 +14,7 @@ type Props = {
 const verifyString = (value: unknown): value is string => typeof value === "string";
 const verifyNumber = (value: unknown): value is number => typeof value === "number";
 
+// TODO: refactor after changing the generateStats/getStats function
 export const addValuesToWorksheet = async ({ workbook, worksheet, data }: Props) => {
   const { allLetters, allAuthors, allDestinations } = data;
   const normalStyle = workbook.createStyle({
@@ -46,7 +47,7 @@ export const addValuesToWorksheet = async ({ workbook, worksheet, data }: Props)
         .style(normalStyle);
   });
 
-  const allStats = await generateStats();
+  const allStats = await getStats();
   Object.entries(allStats).forEach(([k, v], i) => {
     verifyString(k) &&
       worksheet
@@ -54,10 +55,10 @@ export const addValuesToWorksheet = async ({ workbook, worksheet, data }: Props)
         .string(k)
         .style(normalStyle);
 
-    verifyString(v.toString()) &&
+    verifyString(Number(v).toString()) &&
       worksheet
         .cell(i + 2, 6)
-        .string(v.toString())
+        .string(Number(v).toString())
         .style(normalStyle);
   });
 };

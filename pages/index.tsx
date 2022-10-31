@@ -3,7 +3,6 @@ import { fetcher } from "../lib/fetcher";
 import { Box, Paper, useMediaQuery } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Image from "next/image";
-import { extractFilters } from "../lib/stats/format";
 import { SEO } from "../components/common/SEO";
 
 import { Total } from "../components/stats/Total";
@@ -12,7 +11,8 @@ import { Destinations } from "../components/stats/Destinations";
 import { Authors } from "../components/stats/Authors";
 import { useReloadOnResize } from "../lib/hooks/useReloadOnResize";
 import { InferGetStaticPropsType } from "next";
-import { generateStats } from "../lib/stats/stats";
+import { getStats } from "../lib/stats/stats";
+import { Stats } from "../lib/stats/types";
 
 const useStyles = makeStyles({
   grid: {
@@ -26,7 +26,7 @@ const useStyles = makeStyles({
 });
 
 const Home = ({ initialData }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const { data } = useQuery("/api/stats", fetcher("/api/stats"), {
+  const { data } = useQuery("/api/stats", fetcher<Stats>("/api/stats"), {
     refetchInterval: 30000,
     initialData,
   });
@@ -84,19 +84,17 @@ const Home = ({ initialData }: InferGetStaticPropsType<typeof getStaticProps>) =
       </Box>
       <Box style={{ gridRow: mobileLayout ? "2" : "1", gridColumn: mobileLayout ? "1" : "4 / 10" }}>
         <Total
-          totalLetters={data.totalLetters}
-          totalDestinations={data.totalDestinations}
-          totalAuthors={data.totalAuthors}
+          totalLetters={Number(data.totalLetters || 0)}
+          totalDestinations={Number(data.totalDestinations || 0)}
+          totalAuthors={Number(data.totalAuthors || 0)}
         />
       </Box>
       <Box style={{ gridRow: mobileLayout ? "3" : "2", gridColumn: mobileLayout ? "1" : "4 / 10" }}>
         <Authors
-          authors={extractFilters(data, "top.").map((key) => {
-            return {
-              name: `${key.split(".")[2]} ${key.split(".")[3]}`,
-              value: parseInt(data[key]),
-            };
-          })}
+          authors={data.topAuthors.map((a) => ({
+            name: `${a.classId} - ${a.registerNumber}`,
+            value: Number(a.letters || 0),
+          }))}
         />
       </Box>
       <Box
@@ -106,24 +104,23 @@ const Home = ({ initialData }: InferGetStaticPropsType<typeof getStaticProps>) =
         }}
       >
         <Classes
-          classes={extractFilters(data, "lettersOfClass.").map((key) => {
-            return {
-              name: key.replace("lettersOfClass.", ""),
-              value: parseInt(data[key]),
-            };
-          })}
+          classes={data.lettersByClass.map((c) => ({
+            name: c.classId || "Anonymous",
+            value: Number(c.lettersCount || 0),
+          }))}
         />
       </Box>
       <Box style={{ gridRow: mobileLayout ? "5" : "3", gridColumn: mobileLayout ? "1" : "1 / 13" }}>
         <Destinations
-          destinations={extractFilters(data, "lettersTo.").map((key) => {
+          destinations={data.lettersByDestination.map((d) => {
+            const ad = data.anonymousLettersByDestination.find(
+              (ad) => ad.destinationId === d.destinationId,
+            );
+
             return {
-              name: key.replace(
-                key.startsWith("lettersTo.") ? "lettersTo." : "anonymous.lettersTo",
-                "",
-              ),
-              authored: parseInt(data[key]),
-              anonymous: parseInt(data[`anonymous.${key}`]),
+              name: d.name,
+              authored: Number(d.lettersCount || 0) - Number(ad?.anonymousLettersCount || 0),
+              anonymous: Number(ad?.anonymousLettersCount || 0),
             };
           })}
         />
@@ -133,7 +130,7 @@ const Home = ({ initialData }: InferGetStaticPropsType<typeof getStaticProps>) =
 };
 
 export const getStaticProps = async () => {
-  const initialData = await generateStats();
+  const initialData = await getStats();
 
   return {
     props: {

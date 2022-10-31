@@ -31,7 +31,6 @@ export const Authors = ({ authors }: { authors: { name: string; value: number }[
     midAngle,
     innerRadius,
     outerRadius,
-    percent,
     index,
     value,
   }: {
