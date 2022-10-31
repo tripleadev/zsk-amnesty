@@ -17,7 +17,7 @@ export const withApiAuth =
   async (req: R, res: NextApiResponse) => {
     try {
       const sessionId = req.cookies.authorization;
-      const session = await verifySession(sessionId);
+      const session = await verifySession(sessionId || "");
 
       if (shouldRefreshSession(session.updatedAt)) {
         const sessionExpiry = getSessionExpirationDate();
@@ -30,7 +30,7 @@ export const withApiAuth =
             expiresAt: sessionExpiry,
           },
         });
-        res.setHeader("Set-Cookie", getSessionCookie(sessionId, sessionExpiry));
+        res.setHeader("Set-Cookie", getSessionCookie(sessionId || "", sessionExpiry));
       }
 
       (req as R & AuthRequestExtend).session = session;

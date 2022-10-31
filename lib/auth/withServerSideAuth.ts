@@ -20,7 +20,7 @@ export const withServerSideAuth =
     try {
       const { req } = ctx;
       const sessionId = req.cookies.authorization;
-      const session = await verifySession(sessionId);
+      const session = await verifySession(sessionId || "");
 
       if (shouldRefreshSession(session.updatedAt)) {
         const sessionExpiry = getSessionExpirationDate();
@@ -33,7 +33,7 @@ export const withServerSideAuth =
             expiresAt: sessionExpiry,
           },
         });
-        ctx.res.setHeader("Set-Cookie", getSessionCookie(sessionId, sessionExpiry));
+        ctx.res.setHeader("Set-Cookie", getSessionCookie(sessionId || "", sessionExpiry));
       }
 
       (ctx as C & AuthContextExtend).session = session;

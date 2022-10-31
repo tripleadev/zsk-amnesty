@@ -18,7 +18,7 @@ const Login = () => {
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     const sessionId = ctx.req.cookies.authorization;
-    const session = await verifySession(sessionId);
+    const session = await verifySession(sessionId || "");
 
     if (session) {
       return {
