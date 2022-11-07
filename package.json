@@ -48,7 +48,7 @@
     "@types/react": "18.0.24",
     "babel-plugin-superjson-next": "0.4.4",
     "concurrently": "6.4.0",
-    "dotenv": "10.0.0",
+    "dotenv": "16.0.3",
     "eslint": "7.32.0",
     "eslint-config-next": "12.3.2",
     "eslint-config-prettier": "8.3.0",
