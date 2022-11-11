@@ -9,8 +9,6 @@ export const fetcher =
         try {
           const dataObject = JSON.parse(data);
 
-          console.log(dataObject);
-
           return superjson.deserialize({
             json: dataObject.json || dataObject,
             meta: dataObject.meta || {},
