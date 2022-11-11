@@ -10,8 +10,8 @@ export const fetcher =
           const dataObject = JSON.parse(data);
 
           return superjson.deserialize({
-            json: dataObject.json || dataObject,
-            meta: dataObject.meta || {},
+            json: dataObject.json ?? dataObject,
+            meta: dataObject.meta ?? {},
           });
         } catch {
           return data;
