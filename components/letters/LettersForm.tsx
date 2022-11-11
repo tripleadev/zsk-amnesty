@@ -11,7 +11,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { Autocomplete } from "@mui/lab";
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useState } from "react";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import Axios from "axios";
@@ -29,15 +29,13 @@ type FormFields = {
 
 export const LettersForm = () => {
   const theme = useTheme();
-  const { data: destinations } = useQuery<{ allDestinations: Destination[] }>(
+  const { data: destinations } = useQuery(
     "/api/destinations",
-    // TODO: Add typings
-    fetcher<any>("/api/destinations"),
+    fetcher<{ allDestinations: Destination[] }>("/api/destinations"),
   );
-  const { data: classes } = useQuery<{ classes: string[] }>(
+  const { data: classes } = useQuery(
     "/api/classes",
-    // TODO: Add typings
-    fetcher<any>("/api/classes"),
+    fetcher<{ classes: string[] }>("/api/classes"),
   );
   const queryClient = useQueryClient();
 

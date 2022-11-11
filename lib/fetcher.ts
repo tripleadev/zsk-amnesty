@@ -4,4 +4,19 @@ import superjson from "superjson";
 export const fetcher =
   <T>(url: string) =>
   () =>
-    Axios.get(url).then((res) => superjson.parse<T>(res.data));
+    Axios.get<T>(url, {
+      transformResponse: (data) => {
+        try {
+          const dataObject = JSON.parse(data);
+
+          console.log(dataObject);
+
+          return superjson.deserialize({
+            json: dataObject.json || dataObject,
+            meta: dataObject.meta || {},
+          });
+        } catch {
+          return data;
+        }
+      },
+    }).then((res) => res.data);
