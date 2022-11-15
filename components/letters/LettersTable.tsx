@@ -42,13 +42,12 @@ export const LettersTable = () => {
   const [page, setPage] = useState(0);
   const queryClient = useQueryClient();
 
-  const { data, error } = useQuery<{
-    letters: Letters;
-    pagination: { allLettersCount: number };
-  }>(
+  const { data, error } = useQuery(
     [`/api/letters`, { take: pageSize, skip: page * pageSize }],
-    // TODO: Add typings
-    fetcher<any>(`/api/letters?take=${pageSize}&skip=${page * pageSize}`),
+    fetcher<{
+      letters: Letters;
+      pagination: { allLettersCount: number };
+    }>(`/api/letters?take=${pageSize}&skip=${page * pageSize}`),
   );
 
   const [message, setMessage] = useState("");
