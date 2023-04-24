@@ -44,7 +44,7 @@
     "@types/bcrypt": "5.0.0",
     "@types/faker": "5.5.9",
     "@types/lodash.debounce": "4.0.6",
-    "@types/node": "16.11.10",
+    "@types/node": "17.0.45",
     "@types/react": "18.0.24",
     "babel-plugin-superjson-next": "0.4.4",
     "concurrently": "6.4.0",
