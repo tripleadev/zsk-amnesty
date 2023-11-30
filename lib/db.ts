@@ -1,8 +1,5 @@
 import type { PrismaClient as PrismaClientType } from "@prisma/client";
-import { PrismaClient as RegularPrismaClient } from "@prisma/client";
-import { PrismaClient as EdgePrismaClient } from "@prisma/client/edge";
-
-const PrismaClient = process.env.VERCEL ? EdgePrismaClient : RegularPrismaClient;
+import { PrismaClient } from "@prisma/client";
 
 declare global {
   var prisma: PrismaClientType | undefined;
