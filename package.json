@@ -13,8 +13,8 @@
     "lint:eslint": "next lint",
     "lint:ts": "tsc --noEmit",
     "db:migrate:dev": "prisma generate && prisma migrate dev",
-    "db:generate:prod": "prisma generate --data-proxy",
-    "db:migrate:prod": " DATABASE_URL=\"$DIRECT_DATABASE_URL\" ./prod-migrate.sh",
+    "db:generate:prod": "prisma generate",
+    "db:migrate:prod": " DATABASE_URL=\"$POSTGRES_URL_NON_POOLING\" ./prod-migrate.sh",
     "db:seed": "prisma db seed"
   },
   "dependencies": {
