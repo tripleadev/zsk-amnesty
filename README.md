@@ -97,15 +97,7 @@ Currently, the app is deployed using:
 
 - [Vercel](https://vercel.com/)
 
-  Vercel is responsible for hosting the Next.js app.
-
-- [Prisma Cloud](https://cloud.prisma.io/)
-
-  Prisma Cloud acts as a database proxy between the app hosted on Vercel, and the PostgreSQL database hosted on Heroku. The data proxy is needed for deployments in serverless environments, in order to have a bigger connection pool for the database, without affecting its reliability and/or performance.
-
-- [Heroku](https://heroku.com/)
-
-  We use Heroku Postgres to keep our data in a safe and reliable place.
+  Vercel is responsible for hosting the Next.js app, and handling the data storage with Vercel Postgres.
 
 ### Environments
 
