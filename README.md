@@ -117,6 +117,6 @@ If you want to deploy this app on your own (we are not planning on transfering o
 
 1. Fork or clone this repo
 2. Set up a a deployment of your own choice - all you need to provide is a hosting for the Next.js app, and the following environment variables:
-   - DATABSE_URL: the connection string/url of the PostgreSQL database. You can also use the [Prisma Cloud Data Proxy](https://www.prisma.io/docs/concepts/components/prisma-data-platform). You can always inspire from the way [how we deployed the app](#deployment) 😄
+   - POSTGRES_URL: the connection string/url of the PostgreSQL database. You can also use the [Prisma Cloud Data Proxy](https://www.prisma.io/docs/concepts/components/prisma-data-platform). You can always inspire from the way [how we deployed the app](#deployment) 😄
 
 Our suggestion for the simpliest and fastest deployment setup is just using Heroku for both deploying the App and Database, without having to worry about Prisma Cloud. But the limitation is a harder setup of multiple environments.
