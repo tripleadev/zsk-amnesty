@@ -20,6 +20,7 @@ The main concepts and features of the app were put toghether on this board: http
   - [Environments](#environments)
   - [Summary](#summary-1)
 - [How do I deploy the app on my own?](#how-do-i-deploy-the-app-on-my-own)
+- [Resetting the DB](#resetting-the-db)
 
 ## What's it made of?
 
@@ -120,3 +121,17 @@ If you want to deploy this app on your own (we are not planning on transfering o
    - DATABSE_URL: the connection string/url of the PostgreSQL database. You can also use the [Prisma Cloud Data Proxy](https://www.prisma.io/docs/concepts/components/prisma-data-platform). You can always inspire from the way [how we deployed the app](#deployment) 😄
 
 Our suggestion for the simpliest and fastest deployment setup is just using Heroku for both deploying the App and Database, without having to worry about Prisma Cloud. But the limitation is a harder setup of multiple environments.
+
+## Resetting the DB
+
+Run the following queries directly into the database:
+```sql
+DELETE FROM "Letter";
+DELETE FROM "Author";
+DELETE FROM "Destination";
+
+REFRESH MATERIALIZED VIEW "AnonymousLettersByDestination";
+REFRESH MATERIALIZED VIEW "BasicStats";
+REFRESH MATERIALIZED VIEW "LettersByClass";
+REFRESH MATERIALIZED VIEW "LettersByDestination";
+```
