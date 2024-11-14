@@ -124,7 +124,7 @@ Our suggestion for the simpliest and fastest deployment setup is just using Hero
 
 ## Resetting the DB
 
-Run the following queries directly into the database:
+Run the following queries on the database:
 ```sql
 DELETE FROM "Letter";
 DELETE FROM "Author";
