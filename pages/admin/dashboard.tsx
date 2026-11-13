@@ -59,6 +59,13 @@ const AdminPage = ({ user }: InferGetServerSidePropsType<typeof getServerSidePro
             </Button>
           </a>
         </Grid>
+        <Grid item xs={12} md={3} lg={2}>
+          <Link href="/admin/database" passHref>
+            <Button variant="outlined" color="error" sx={{ marginInline: theme.spacing(1) }}>
+              Database
+            </Button>
+          </Link>
+        </Grid>
         {/* Here we'll be adding links to the other pages */}
         <Grid item xs={12} md={3} lg={2}>
           <Link href="/admin/logout" prefetch={false} passHref>
