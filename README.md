@@ -124,7 +124,9 @@ Our suggestion for the simpliest and fastest deployment setup is just using Hero
 
 ## Resetting the DB
 
-Run the following queries on the database:
+Use the **Database** page in the admin panel (`/admin/database`). It downloads a CSV backup of all letters, authors and destinations, then deletes them. The same page can restore the database from such a backup.
+
+To do it manually, run the following queries on the database:
 ```sql
 DELETE FROM "Letter";
 DELETE FROM "Author";
