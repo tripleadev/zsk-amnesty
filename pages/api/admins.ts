@@ -11,7 +11,7 @@ export const adminSchema = object({
 });
 
 export const deleteAdminSchema = object({
-  ids: array(string()).required(),
+  ids: array(string().required()).required(),
 });
 
 export type AdminSchemaType = Asserts<typeof adminSchema>;
@@ -44,13 +44,11 @@ export default withApiAuth(
       const { ids } = req.body;
 
       try {
-        await prisma.$transaction(
-          ids.map((adminId) =>
-            prisma.admin.delete({
-              where: { id: adminId },
-            }),
-          ),
-        );
+        // Sessions reference the admin, so they have to go first
+        await prisma.$transaction([
+          prisma.session.deleteMany({ where: { userId: { in: ids } } }),
+          prisma.admin.deleteMany({ where: { id: { in: ids } } }),
+        ]);
 
         return res.json({ message: "Admin has been deleted successfully" });
       } catch {
